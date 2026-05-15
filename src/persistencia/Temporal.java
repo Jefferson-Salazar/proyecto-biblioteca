@@ -1,5 +1,5 @@
 package persistencia;
 
-public class Info {
+public class Temporal {
 
 }
