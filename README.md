@@ -2,7 +2,7 @@
 
 ## Semana 1
 Diseño y núcleo del modelo.
-Completado
+
 
 ## Herramientas
 - Java
