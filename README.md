@@ -3,6 +3,7 @@
 ## Semana 1
 Diseño y núcleo del modelo.
 
+
 ## Herramientas
 - Java
 - Java Swing
