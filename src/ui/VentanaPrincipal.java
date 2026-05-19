@@ -193,6 +193,13 @@ public class VentanaPrincipal extends JFrame {
 				ventana.setVisible(true);
 			}
 		});
+		
+		botonUsuarios.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent e) {
+				VentanaUsuarios ventana = new VentanaUsuarios();
+				ventana.setVisible(true);
+			}
+		});
 
 		
 	}
