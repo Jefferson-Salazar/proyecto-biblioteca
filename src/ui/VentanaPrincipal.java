@@ -186,5 +186,14 @@ public class VentanaPrincipal extends JFrame {
 		botonPrestamos.setBorderPainted(false);
 		botonPrestamos.setBounds(30, 256, 170, 38);
 		tarjeta3.add(botonPrestamos);
+		
+		botonMateriales.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent e) {
+				VentanaMateriales ventana = new VentanaMateriales();
+				ventana.setVisible(true);
+			}
+		});
+
+		
 	}
 }
