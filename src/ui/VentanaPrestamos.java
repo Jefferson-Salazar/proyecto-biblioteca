@@ -218,7 +218,7 @@ public class VentanaPrestamos extends JFrame {
 		botonBuscar.setFont(new Font("Segoe UI", Font.PLAIN, 12));
 		botonBuscar.setFocusPainted(false);
 		botonBuscar.setBorderPainted(false);
-		botonBuscar.setBounds(515, 50, 120, 26);
+		botonBuscar.setBounds(515, 50, 130, 26);
 		panelTabla.add(botonBuscar);
 		
 		modeloTabla = new DefaultTableModel();
