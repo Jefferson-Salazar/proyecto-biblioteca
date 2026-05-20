@@ -9,11 +9,18 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import java.awt.Cursor;
+import java.util.ArrayList;
+import java.util.List;
+import dominio.Material;
+import dominio.Usuario;
 
 public class VentanaPrincipal extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private JPanel contenido;
+	private JPanel contentPane;
+
+	private List<Material> materiales = new ArrayList<>();
+	private List<Usuario> usuarios = new ArrayList<>();
 
 	public static void main(String[] args) {
 		java.awt.EventQueue.invokeLater(new Runnable() {
@@ -33,17 +40,17 @@ public class VentanaPrincipal extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1000, 600);
 		setLocationRelativeTo(null);
-		contenido = new JPanel();
-		contenido.setBackground(new Color(10, 12, 16));
-		contenido.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contenido);
-		contenido.setLayout(null);
+		contentPane = new JPanel();
+		contentPane.setBackground(new Color(10, 12, 16));
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
 
 		// CABECERA
 		JPanel panelCabecera = new JPanel();
 		panelCabecera.setBackground(new Color(14, 17, 24));
 		panelCabecera.setBounds(0, 0, 1000, 80);
-		contenido.add(panelCabecera);
+		contentPane.add(panelCabecera);
 		panelCabecera.setLayout(null);
 
 		JLabel lblTitulo = new JLabel("SISTEMA DE BIBLIOTECA");
@@ -56,7 +63,7 @@ public class VentanaPrincipal extends JFrame {
 		JPanel tarjeta1 = new JPanel();
 		tarjeta1.setBackground(new Color(18, 22, 30));
 		tarjeta1.setBounds(100, 140, 230, 310);
-		contenido.add(tarjeta1);
+		contentPane.add(tarjeta1);
 		tarjeta1.setLayout(null);
 
 		JPanel barra1 = new JPanel();
@@ -101,7 +108,7 @@ public class VentanaPrincipal extends JFrame {
 		JPanel tarjeta2 = new JPanel();
 		tarjeta2.setBackground(new Color(18, 22, 30));
 		tarjeta2.setBounds(385, 140, 230, 310);
-		contenido.add(tarjeta2);
+		contentPane.add(tarjeta2);
 		tarjeta2.setLayout(null);
 
 		JPanel barra2 = new JPanel();
@@ -146,7 +153,7 @@ public class VentanaPrincipal extends JFrame {
 		JPanel tarjeta3 = new JPanel();
 		tarjeta3.setBackground(new Color(18, 22, 30));
 		tarjeta3.setBounds(670, 140, 230, 310);
-		contenido.add(tarjeta3);
+		contentPane.add(tarjeta3);
 		tarjeta3.setLayout(null);
 
 		JPanel barra3 = new JPanel();
@@ -186,28 +193,18 @@ public class VentanaPrincipal extends JFrame {
 		botonPrestamos.setBorderPainted(false);
 		botonPrestamos.setBounds(30, 256, 170, 38);
 		tarjeta3.add(botonPrestamos);
-		
-		botonMateriales.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent e) {
-				VentanaMateriales ventana = new VentanaMateriales();
-				ventana.setVisible(true);
-			}
-		});
-		
-		botonUsuarios.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent e) {
-				VentanaUsuarios ventana = new VentanaUsuarios();
-				ventana.setVisible(true);
-			}
-		});
-		
-		botonPrestamos.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent e) {
-				VentanaPrestamos ventana = new VentanaPrestamos();
-				ventana.setVisible(true);
-			}
+
+		// FUNCIONALIDADES ORIGINALES (listas compartidas entre ventanas)
+		botonMateriales.addActionListener(e -> {
+			new VentanaMateriales(materiales).setVisible(true);
 		});
 
-		
+		botonUsuarios.addActionListener(e -> {
+			new VentanaUsuarios(usuarios).setVisible(true);
+		});
+
+		botonPrestamos.addActionListener(e -> {
+			new VentanaPrestamos(materiales, usuarios).setVisible(true);
+		});
 	}
 }

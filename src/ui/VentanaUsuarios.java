@@ -1,5 +1,9 @@
 package ui;
 
+import dominio.Estudiante;
+import dominio.Docente;
+import dominio.Usuario;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -12,24 +16,30 @@ import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.awt.Cursor;
+import java.util.List;
 
 public class VentanaUsuarios extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contenido;
 	
-	// campos del formulario
+	private List<Usuario> usuarios;
+	
 	JTextField campoCarnet;
 	JTextField campoNombre;
+	JTextField campoApellido;
+	JTextField campoTelefono;
+	JTextField campoCorreo;
 	JComboBox<String> comboRol;
 	
-	// tabla
 	JTable tablaUsuarios;
 	DefaultTableModel modeloTabla;
 
-	public VentanaUsuarios() {
+	public VentanaUsuarios(List<Usuario> usuarios) {
+		this.usuarios = usuarios;
 		
 		setTitle("Usuarios");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -42,7 +52,6 @@ public class VentanaUsuarios extends JFrame {
 		setContentPane(contenido);
 		contenido.setLayout(null);
 		
-		// cabecera
 		JPanel panelCabecera = new JPanel();
 		panelCabecera.setBackground(new Color(14, 17, 24));
 		panelCabecera.setBounds(0, 0, 1000, 65);
@@ -80,7 +89,6 @@ public class VentanaUsuarios extends JFrame {
 			}
 		});
 		
-		// panel formulario izquierdo
 		JPanel panelFormulario = new JPanel();
 		panelFormulario.setBackground(new Color(18, 22, 30));
 		panelFormulario.setBounds(10, 78, 300, 490);
@@ -98,7 +106,6 @@ public class VentanaUsuarios extends JFrame {
 		lblRegistrar.setBounds(15, 14, 200, 22);
 		panelFormulario.add(lblRegistrar);
 		
-		// rol
 		JLabel lblRol = new JLabel("Rol");
 		lblRol.setForeground(new Color(110, 118, 135));
 		lblRol.setFont(new Font("Segoe UI", Font.PLAIN, 11));
@@ -114,7 +121,6 @@ public class VentanaUsuarios extends JFrame {
 		comboRol.setBounds(15, 61, 270, 26);
 		panelFormulario.add(comboRol);
 		
-		// carnet
 		JLabel lblCarnet = new JLabel("Carnet");
 		lblCarnet.setForeground(new Color(110, 118, 135));
 		lblCarnet.setFont(new Font("Segoe UI", Font.PLAIN, 11));
@@ -129,7 +135,6 @@ public class VentanaUsuarios extends JFrame {
 		campoCarnet.setBounds(15, 117, 270, 26);
 		panelFormulario.add(campoCarnet);
 		
-		// nombre
 		JLabel lblNombre = new JLabel("Nombre");
 		lblNombre.setForeground(new Color(110, 118, 135));
 		lblNombre.setFont(new Font("Segoe UI", Font.PLAIN, 11));
@@ -144,14 +149,13 @@ public class VentanaUsuarios extends JFrame {
 		campoNombre.setBounds(15, 173, 270, 26);
 		panelFormulario.add(campoNombre);
 		
-		// apellido
 		JLabel lblApellido = new JLabel("Apellido");
 		lblApellido.setForeground(new Color(110, 118, 135));
 		lblApellido.setFont(new Font("Segoe UI", Font.PLAIN, 11));
 		lblApellido.setBounds(15, 212, 100, 16);
 		panelFormulario.add(lblApellido);
 
-		JTextField campoApellido = new JTextField();
+		campoApellido = new JTextField();
 		campoApellido.setBackground(new Color(10, 12, 16));
 		campoApellido.setForeground(new Color(243, 244, 246));
 		campoApellido.setCaretColor(Color.WHITE);
@@ -159,14 +163,13 @@ public class VentanaUsuarios extends JFrame {
 		campoApellido.setBounds(15, 229, 270, 26);
 		panelFormulario.add(campoApellido);
 
-		// telefono
 		JLabel lblTelefono = new JLabel("Teléfono");
 		lblTelefono.setForeground(new Color(110, 118, 135));
 		lblTelefono.setFont(new Font("Segoe UI", Font.PLAIN, 11));
 		lblTelefono.setBounds(15, 268, 100, 16);
 		panelFormulario.add(lblTelefono);
 
-		JTextField campoTelefono = new JTextField();
+		campoTelefono = new JTextField();
 		campoTelefono.setBackground(new Color(10, 12, 16));
 		campoTelefono.setForeground(new Color(243, 244, 246));
 		campoTelefono.setCaretColor(Color.WHITE);
@@ -174,14 +177,13 @@ public class VentanaUsuarios extends JFrame {
 		campoTelefono.setBounds(15, 285, 270, 26);
 		panelFormulario.add(campoTelefono);
 
-		// correo
 		JLabel lblCorreo = new JLabel("Correo");
 		lblCorreo.setForeground(new Color(110, 118, 135));
 		lblCorreo.setFont(new Font("Segoe UI", Font.PLAIN, 11));
 		lblCorreo.setBounds(15, 324, 100, 16);
 		panelFormulario.add(lblCorreo);
 
-		JTextField campoCorreo = new JTextField();
+		campoCorreo = new JTextField();
 		campoCorreo.setBackground(new Color(10, 12, 16));
 		campoCorreo.setForeground(new Color(243, 244, 246));
 		campoCorreo.setCaretColor(Color.WHITE);
@@ -189,7 +191,6 @@ public class VentanaUsuarios extends JFrame {
 		campoCorreo.setBounds(15, 341, 270, 26);
 		panelFormulario.add(campoCorreo);
 
-		// botones
 		JButton botonAgregar = new JButton("AGREGAR");
 		botonAgregar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		botonAgregar.setForeground(Color.WHITE);
@@ -210,7 +211,6 @@ public class VentanaUsuarios extends JFrame {
 		botonLimpiar.setBounds(155, 386, 130, 34);
 		panelFormulario.add(botonLimpiar);
 		
-		// panel tabla derecho
 		JPanel panelTabla = new JPanel();
 		panelTabla.setBackground(new Color(18, 22, 30));
 		panelTabla.setBounds(322, 78, 660, 490);
@@ -259,9 +259,11 @@ public class VentanaUsuarios extends JFrame {
 		modeloTabla.addColumn("Apellido");
 		modeloTabla.addColumn("Teléfono");
 		modeloTabla.addColumn("Correo");
-		modeloTabla.addColumn("Préstamos activos");
+		modeloTabla.addColumn("Préstamo Activo"); // NUEVA COLUMNA
 		
-		tablaUsuarios = new JTable(modeloTabla);
+		tablaUsuarios = new JTable(modeloTabla) {
+			public boolean isCellEditable(int row, int col) { return false; }
+		};
 		tablaUsuarios.setBackground(new Color(10, 12, 16));
 		tablaUsuarios.setForeground(new Color(200, 204, 212));
 		tablaUsuarios.setFont(new Font("Segoe UI", Font.PLAIN, 12));
@@ -278,26 +280,9 @@ public class VentanaUsuarios extends JFrame {
 		scroll.setBounds(15, 90, 630, 370);
 		panelTabla.add(scroll);
 
-		// acciones
 		botonAgregar.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent e) {
-				String carnet = campoCarnet.getText();
-				String nombre = campoNombre.getText();
-				String apellido = campoApellido.getText();
-				String telefono = campoTelefono.getText();
-				String correo = campoCorreo.getText();
-				String rol = comboRol.getSelectedItem().toString();
-
-				modeloTabla.addRow(new Object[]{
-					carnet, rol, nombre, apellido, telefono, correo, 0
-				});
-
-				campoCarnet.setText("");
-				campoNombre.setText("");
-				campoApellido.setText("");
-				campoTelefono.setText("");
-				campoCorreo.setText("");
-				comboRol.setSelectedIndex(0);
+				registrarUsuario();
 			}
 		});
 
@@ -311,5 +296,73 @@ public class VentanaUsuarios extends JFrame {
 				comboRol.setSelectedIndex(0);
 			}
 		});
+
+		botonBuscar.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent e) {
+				buscarUsuario(campoBuscar.getText().trim().toLowerCase());
+			}
+		});
+	}
+
+	private void registrarUsuario() {
+		try {
+			String carnet = campoCarnet.getText().trim();
+			String nombre = campoNombre.getText().trim();
+			String apellido = campoApellido.getText().trim();
+			String telefono = campoTelefono.getText().trim();
+			String correo = campoCorreo.getText().trim();
+			String rol = comboRol.getSelectedItem().toString();
+
+			for (Usuario u : usuarios) {
+				if (u.getCarnet().equalsIgnoreCase(carnet)) {
+					JOptionPane.showMessageDialog(this,
+						"Ya existe un usuario con ese carnet.",
+						"Carnet duplicado", JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+			}
+
+			Usuario nuevo;
+			if (rol.equals("Estudiante")) {
+				nuevo = new Estudiante(carnet, nombre, apellido, telefono, correo, rol, getDefaultCloseOperation());
+			} else {
+				nuevo = new Docente(carnet, nombre, apellido, telefono, correo, rol);
+			}
+
+			usuarios.add(nuevo);
+			agregarFilaTabla(nuevo);
+
+			campoCarnet.setText("");
+			campoNombre.setText("");
+			campoApellido.setText("");
+			campoTelefono.setText("");
+			campoCorreo.setText("");
+			comboRol.setSelectedIndex(0);
+
+			JOptionPane.showMessageDialog(this, "Usuario registrado correctamente.");
+
+		} catch (IllegalArgumentException ex) {
+			JOptionPane.showMessageDialog(this,
+				ex.getMessage(), "Error de validación", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+	private void agregarFilaTabla(Usuario u) {
+		String rol = (u instanceof Estudiante) ? "Estudiante" : "Docente";
+		modeloTabla.addRow(new Object[]{
+			u.getCarnet(), rol, u.getNombre(), u.getApellido(),
+			u.getTelefono(), u.getCorreo(), "No" // valor por defecto de Préstamo Activo
+		});
+	}
+
+	private void buscarUsuario(String filtro) {
+		modeloTabla.setRowCount(0);
+		for (Usuario u : usuarios) {
+			if (u.getCarnet().toLowerCase().contains(filtro)
+				|| u.getNombre().toLowerCase().contains(filtro)
+				|| u.getApellido().toLowerCase().contains(filtro)) {
+				agregarFilaTabla(u);
+			}
+		}
 	}
 }

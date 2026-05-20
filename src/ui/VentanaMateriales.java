@@ -19,7 +19,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.awt.Cursor;
-import java.util.ArrayList;
 import java.util.List;
 
 public class VentanaMateriales extends JFrame {
@@ -27,8 +26,8 @@ public class VentanaMateriales extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contenido;
 
-	// datos
-	private List<Material> materiales = new ArrayList<>();
+	// datos - AHORA RECIBE LA LISTA COMPARTIDA
+	private List<Material> materiales;
 	private DefaultTableModel modeloTabla;
 
 	// campos del formulario
@@ -38,14 +37,16 @@ public class VentanaMateriales extends JFrame {
 	JTextField campoAño;
 	JTextField campoCopias;
 	JTextField campoExtra;
-	JComboBox<Object> comboTipo;
+	JComboBox comboTipo;
 	JLabel labelExtra;
 
 	// tabla y busqueda
 	JTable tablaMateriales;
 	JTextField campoBuscar;
 
-	public VentanaMateriales() {
+	// CONSTRUCTOR MODIFICADO - RECIBE LA LISTA
+	public VentanaMateriales(List<Material> materiales) {
+		this.materiales = materiales;
 
 		setTitle("Materiales");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -121,7 +122,7 @@ public class VentanaMateriales extends JFrame {
 		lblTipo.setBounds(15, 44, 100, 16);
 		panelFormulario.add(lblTipo);
 
-		comboTipo = new JComboBox<>();
+		comboTipo = new JComboBox();
 		comboTipo.addItem("Libro");
 		comboTipo.addItem("Revista");
 		comboTipo.setBackground(new Color(10, 12, 16));
