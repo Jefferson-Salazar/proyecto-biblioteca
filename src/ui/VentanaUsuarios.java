@@ -26,7 +26,16 @@ public class VentanaUsuarios extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contenido;
 	
+
 	private List<Usuario> usuarios;
+
+	// campos del formulario
+	JTextField campoCarrera;
+	JTextField campoSemestre;
+
+	JLabel lblCarrera;
+	JLabel lblSemestre;
+
 	
 	JTextField campoCarnet;
 	JTextField campoNombre;
@@ -35,6 +44,11 @@ public class VentanaUsuarios extends JFrame {
 	JTextField campoCorreo;
 	JComboBox<String> comboRol;
 	
+
+
+	
+	// tabla
+
 	JTable tablaUsuarios;
 	DefaultTableModel modeloTabla;
 
@@ -43,7 +57,7 @@ public class VentanaUsuarios extends JFrame {
 		
 		setTitle("Usuarios");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 1000, 600);
+		setBounds(100, 100, 1300, 760);
 		setLocationRelativeTo(null);
 		
 		contenido = new JPanel();
@@ -54,7 +68,7 @@ public class VentanaUsuarios extends JFrame {
 		
 		JPanel panelCabecera = new JPanel();
 		panelCabecera.setBackground(new Color(14, 17, 24));
-		panelCabecera.setBounds(0, 0, 1000, 65);
+		panelCabecera.setBounds(0, 0, 2000, 65);
 		contenido.add(panelCabecera);
 		panelCabecera.setLayout(null);
 		
@@ -80,7 +94,7 @@ public class VentanaUsuarios extends JFrame {
 		botonVolver.setFont(new Font("Segoe UI", Font.BOLD, 12));
 		botonVolver.setFocusPainted(false);
 		botonVolver.setBorderPainted(false);
-		botonVolver.setBounds(870, 18, 100, 28);
+		botonVolver.setBounds(1100, 18, 200, 28);
 		panelCabecera.add(botonVolver);
 		
 		botonVolver.addActionListener(new java.awt.event.ActionListener() {
@@ -91,7 +105,11 @@ public class VentanaUsuarios extends JFrame {
 		
 		JPanel panelFormulario = new JPanel();
 		panelFormulario.setBackground(new Color(18, 22, 30));
+
 		panelFormulario.setBounds(10, 78, 300, 490);
+
+		panelFormulario.setBounds(10, 78, 300, 620);
+
 		contenido.add(panelFormulario);
 		panelFormulario.setLayout(null);
 		
@@ -121,7 +139,36 @@ public class VentanaUsuarios extends JFrame {
 		comboRol.setBounds(15, 61, 270, 26);
 		panelFormulario.add(comboRol);
 		
+
 		JLabel lblCarnet = new JLabel("Carnet");
+		comboRol.addActionListener(e -> {
+
+		    String rol = comboRol.getSelectedItem().toString();
+
+		    if(rol.equals("Estudiante")) {
+
+		        lblCarrera.setText("Carrera");
+
+		        lblSemestre.setVisible(true);
+		        campoSemestre.setVisible(true);
+
+		    } else {
+
+		        lblCarrera.setText("Departamento");
+
+		        lblSemestre.setVisible(false);
+		        campoSemestre.setVisible(false);
+
+		        campoSemestre.setText("");
+		    }
+
+		});
+		
+		
+		
+		// carnet
+		
+
 		lblCarnet.setForeground(new Color(110, 118, 135));
 		lblCarnet.setFont(new Font("Segoe UI", Font.PLAIN, 11));
 		lblCarnet.setBounds(15, 100, 100, 16);
@@ -191,14 +238,91 @@ public class VentanaUsuarios extends JFrame {
 		campoCorreo.setBounds(15, 341, 270, 26);
 		panelFormulario.add(campoCorreo);
 
+
 		JButton botonAgregar = new JButton("AGREGAR");
+
+		
+		// etiqueta extra
+		lblCarrera = new JLabel("Carrera");
+		lblCarrera .setForeground(new Color(110, 118, 135));
+		lblCarrera .setFont(new Font("Segoe UI", Font.PLAIN, 11));
+		lblCarrera .setBounds(15, 414, 120, 16);
+		panelFormulario.add(lblCarrera );
+
+		campoCarrera = new JTextField();
+		campoCarrera .setBackground(new Color(10, 12, 16));
+		campoCarrera .setForeground(new Color(243, 244, 246));
+		campoCarrera .setCaretColor(Color.WHITE);
+		campoCarrera .setFont(new Font("Segoe UI", Font.PLAIN, 12));
+		campoCarrera .setBounds(15, 432, 270, 28);
+		panelFormulario.add(campoCarrera );
+
+		// segunda etiqueta
+		lblSemestre = new JLabel("Semestre");
+		lblSemestre.setForeground(new Color(110, 118, 135));
+		lblSemestre.setFont(new Font("Segoe UI", Font.PLAIN, 11));
+		lblSemestre.setBounds(15, 474, 120, 16);
+		panelFormulario.add(lblSemestre);
+
+		campoSemestre = new JTextField();
+		campoSemestre.setBackground(new Color(10, 12, 16));
+		campoSemestre.setForeground(new Color(243, 244, 246));
+		campoSemestre.setCaretColor(Color.WHITE);
+		campoSemestre.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+		campoSemestre.setBounds(15, 492, 270, 28);
+		panelFormulario.add(campoSemestre);
+		
+		
+		botonAgregar.addActionListener(e -> {
+
+		    String carnet = campoCarnet.getText();
+		    String nombre = campoNombre.getText();
+		    String apellido = campoApellido.getText();
+		    String telefono = campoTelefono.getText();
+		    String correo = campoCorreo.getText();
+		    String carreraDepartamento = campoCarrera.getText();
+
+		    String rol = comboRol.getSelectedItem().toString();
+
+		    String semestre = "";
+
+		    if(rol.equals("Estudiante")) {
+		        semestre = campoSemestre.getText();
+		    }
+
+		    modeloTabla.addRow(new Object[] {
+		        carnet,
+		        rol,
+		        nombre,
+		        apellido,
+		        telefono,
+		        correo,
+		        carreraDepartamento,
+		        semestre,
+		        0
+		    });
+
+		    // limpiar campos
+		    campoCarnet.setText("");
+		    campoNombre.setText("");
+		    campoApellido.setText("");
+		    campoTelefono.setText("");
+		    campoCorreo.setText("");
+		    campoCarrera.setText("");
+		    campoSemestre.setText("");
+
+		});
+
 		botonAgregar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		botonAgregar.setForeground(Color.WHITE);
 		botonAgregar.setBackground(new Color(52, 199, 160));
 		botonAgregar.setFont(new Font("Segoe UI", Font.BOLD, 13));
 		botonAgregar.setFocusPainted(false);
 		botonAgregar.setBorderPainted(false);
+
 		botonAgregar.setBounds(15, 386, 130, 34);
+
+		botonAgregar.setBounds(15, 570, 270, 36);
 		panelFormulario.add(botonAgregar);
 
 		JButton botonLimpiar = new JButton("LIMPIAR");
@@ -213,13 +337,17 @@ public class VentanaUsuarios extends JFrame {
 		
 		JPanel panelTabla = new JPanel();
 		panelTabla.setBackground(new Color(18, 22, 30));
+
 		panelTabla.setBounds(322, 78, 660, 490);
+
+		panelTabla.setBounds(322, 78, 900, 620);
+
 		contenido.add(panelTabla);
 		panelTabla.setLayout(null);
 		
 		JPanel barraVerde2 = new JPanel();
 		barraVerde2.setBackground(new Color(52, 199, 160));
-		barraVerde2.setBounds(0, 0, 660, 4);
+		barraVerde2.setBounds(0, 0, 900, 4);
 		panelTabla.add(barraVerde2);
 		
 		JLabel lblLista = new JLabel("Lista de usuarios");
@@ -231,7 +359,8 @@ public class VentanaUsuarios extends JFrame {
 		JLabel lblBuscar = new JLabel("Buscar:");
 		lblBuscar.setForeground(new Color(110, 118, 135));
 		lblBuscar.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-		lblBuscar.setBounds(15, 50, 60, 24);
+		lblBuscar.setBounds(45, 55, 100, 25);
+
 		panelTabla.add(lblBuscar);
 		
 		JTextField campoBuscar = new JTextField();
@@ -239,7 +368,7 @@ public class VentanaUsuarios extends JFrame {
 		campoBuscar.setForeground(new Color(243, 244, 246));
 		campoBuscar.setCaretColor(Color.WHITE);
 		campoBuscar.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-		campoBuscar.setBounds(75, 50, 430, 26);
+		campoBuscar.setBounds(100, 52, 580, 32);
 		panelTabla.add(campoBuscar);
 		
 		JButton botonBuscar = new JButton("Buscar");
@@ -249,7 +378,7 @@ public class VentanaUsuarios extends JFrame {
 		botonBuscar.setFont(new Font("Segoe UI", Font.PLAIN, 12));
 		botonBuscar.setFocusPainted(false);
 		botonBuscar.setBorderPainted(false);
-		botonBuscar.setBounds(515, 50, 130, 26);
+		botonBuscar.setBounds(700, 52, 180, 32);
 		panelTabla.add(botonBuscar);
 		
 		modeloTabla = new DefaultTableModel();
@@ -259,7 +388,13 @@ public class VentanaUsuarios extends JFrame {
 		modeloTabla.addColumn("Apellido");
 		modeloTabla.addColumn("Teléfono");
 		modeloTabla.addColumn("Correo");
+
 		modeloTabla.addColumn("Préstamo Activo"); // NUEVA COLUMNA
+
+		modeloTabla.addColumn("Carrera/Departamento");
+		modeloTabla.addColumn("Semestre");
+		modeloTabla.addColumn("Prestamos activos");
+
 		
 		tablaUsuarios = new JTable(modeloTabla) {
 			public boolean isCellEditable(int row, int col) { return false; }
@@ -273,11 +408,21 @@ public class VentanaUsuarios extends JFrame {
 		tablaUsuarios.getTableHeader().setBackground(new Color(18, 22, 30));
 		tablaUsuarios.getTableHeader().setForeground(new Color(110, 118, 135));
 		tablaUsuarios.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 11));
-		
+		tablaUsuarios.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+
+		tablaUsuarios.getColumnModel().getColumn(0).setPreferredWidth(85);  
+		tablaUsuarios.getColumnModel().getColumn(1).setPreferredWidth(80);  
+		tablaUsuarios.getColumnModel().getColumn(2).setPreferredWidth(100); 
+		tablaUsuarios.getColumnModel().getColumn(3).setPreferredWidth(100); 
+		tablaUsuarios.getColumnModel().getColumn(4).setPreferredWidth(90);  
+		tablaUsuarios.getColumnModel().getColumn(5).setPreferredWidth(100); 
+		tablaUsuarios.getColumnModel().getColumn(6).setPreferredWidth(140); 
+		tablaUsuarios.getColumnModel().getColumn(7).setPreferredWidth(80); 
+		tablaUsuarios.getColumnModel().getColumn(8).setPreferredWidth(110); 
 		JScrollPane scroll = new JScrollPane(tablaUsuarios);
 		scroll.getViewport().setBackground(new Color(10, 12, 16));
 		scroll.setBorder(null);
-		scroll.setBounds(15, 90, 630, 370);
+		scroll.setBounds(15, 105, 885, 450);
 		panelTabla.add(scroll);
 
 		botonAgregar.addActionListener(new java.awt.event.ActionListener() {
