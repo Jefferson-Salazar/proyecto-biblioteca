@@ -1,7 +1,13 @@
 package main;
 
+import ui.VentanaPrincipal;
+
 public class Main {
+
     public static void main(String[] args) {
-        System.out.println("Proyecto Biblioteca iniciado correctamente.");
+
+        VentanaPrincipal ventana = new VentanaPrincipal();
+
+        ventana.setVisible(true);
     }
 }

@@ -143,15 +143,88 @@ public class VentanaUsuarios extends JFrame {
 		campoNombre.setFont(new Font("Segoe UI", Font.PLAIN, 12));
 		campoNombre.setBounds(15, 192, 270, 28);
 		panelFormulario.add(campoNombre);
+		// apellido
+		JLabel lblApellido = new JLabel("Apellido");
+		lblApellido.setForeground(new Color(110, 118, 135));
+		lblApellido.setFont(new Font("Segoe UI", Font.PLAIN, 11));
+		lblApellido.setBounds(15, 234, 100, 16);
+		panelFormulario.add(lblApellido);
+
+		JTextField campoApellido = new JTextField();
+		campoApellido.setBackground(new Color(10, 12, 16));
+		campoApellido.setForeground(new Color(243, 244, 246));
+		campoApellido.setCaretColor(Color.WHITE);
+		campoApellido.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+		campoApellido.setBounds(15, 252, 270, 28);
+		panelFormulario.add(campoApellido);
+
+		// telefono
+		JLabel lblTelefono = new JLabel("Telefono");
+		lblTelefono.setForeground(new Color(110, 118, 135));
+		lblTelefono.setFont(new Font("Segoe UI", Font.PLAIN, 11));
+		lblTelefono.setBounds(15, 294, 100, 16);
+		panelFormulario.add(lblTelefono);
+
+		JTextField campoTelefono = new JTextField();
+		campoTelefono.setBackground(new Color(10, 12, 16));
+		campoTelefono.setForeground(new Color(243, 244, 246));
+		campoTelefono.setCaretColor(Color.WHITE);
+		campoTelefono.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+		campoTelefono.setBounds(15, 312, 270, 28);
+		panelFormulario.add(campoTelefono);
+
+		// correo
+		JLabel lblCorreo = new JLabel("Correo");
+		lblCorreo.setForeground(new Color(110, 118, 135));
+		lblCorreo.setFont(new Font("Segoe UI", Font.PLAIN, 11));
+		lblCorreo.setBounds(15, 354, 100, 16);
+		panelFormulario.add(lblCorreo);
+
+		JTextField campoCorreo = new JTextField();
+		campoCorreo.setBackground(new Color(10, 12, 16));
+		campoCorreo.setForeground(new Color(243, 244, 246));
+		campoCorreo.setCaretColor(Color.WHITE);
+		campoCorreo.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+		campoCorreo.setBounds(15, 372, 270, 28);
+		panelFormulario.add(campoCorreo);
 		
 		JButton botonAgregar = new JButton("AGREGAR");
+		botonAgregar.addActionListener(e -> {
+
+		    String carnet = campoCarnet.getText();
+		    String nombre = campoNombre.getText();
+		    String apellido = campoApellido.getText();
+		    String telefono = campoTelefono.getText();
+		    String correo = campoCorreo.getText();
+
+		   String rol = comboRol.getSelectedItem().toString();
+
+		   modeloTabla.addRow(new Object[] {
+				    carnet,
+				    rol,
+				    nombre,
+				    apellido,
+				    telefono,
+				    correo,
+				    0
+				});
+
+		    // Limpiar campos
+		    campoCarnet.setText("");
+		    campoNombre.setText("");
+		    comboRol.setSelectedIndex(0);
+		    campoApellido.setText("");
+		    campoTelefono.setText("");
+		    campoCorreo.setText("");
+		});
+		
 		botonAgregar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		botonAgregar.setForeground(Color.WHITE);
 		botonAgregar.setBackground(new Color(52, 199, 160));
 		botonAgregar.setFont(new Font("Segoe UI", Font.BOLD, 13));
 		botonAgregar.setFocusPainted(false);
 		botonAgregar.setBorderPainted(false);
-		botonAgregar.setBounds(15, 254, 270, 36);
+		botonAgregar.setBounds(15, 430, 270, 36);
 		panelFormulario.add(botonAgregar);
 		
 		// panel tabla derecho
@@ -200,6 +273,9 @@ public class VentanaUsuarios extends JFrame {
 		modeloTabla.addColumn("Carnet");
 		modeloTabla.addColumn("Rol");
 		modeloTabla.addColumn("Nombre");
+		modeloTabla.addColumn("Apellido");
+		modeloTabla.addColumn("Telefono");
+		modeloTabla.addColumn("Correo");
 		modeloTabla.addColumn("Prestamos activos");
 		
 		tablaUsuarios = new JTable(modeloTabla);
