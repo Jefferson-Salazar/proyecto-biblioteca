@@ -38,7 +38,7 @@ public class VentanaMateriales extends JFrame {
 	JTextField campoAño;
 	JTextField campoCopias;
 	JTextField campoExtra;
-	JComboBox comboTipo;
+	JComboBox<Object> comboTipo;
 	JLabel labelExtra;
 
 	// tabla y busqueda
@@ -121,7 +121,7 @@ public class VentanaMateriales extends JFrame {
 		lblTipo.setBounds(15, 44, 100, 16);
 		panelFormulario.add(lblTipo);
 
-		comboTipo = new JComboBox();
+		comboTipo = new JComboBox<>();
 		comboTipo.addItem("Libro");
 		comboTipo.addItem("Revista");
 		comboTipo.setBackground(new Color(10, 12, 16));
