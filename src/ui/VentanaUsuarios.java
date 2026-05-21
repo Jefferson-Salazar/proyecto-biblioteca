@@ -422,10 +422,39 @@ public class VentanaUsuarios extends JFrame {
 			}
 
 			Usuario nuevo;
+
 			if (rol.equals("Estudiante")) {
-				nuevo = new Estudiante(carnet, nombre, apellido, telefono, correo, rol, getDefaultCloseOperation());
+
+			    String carrera = campoCarrera.getText().trim();
+
+			    int semestre = Integer.parseInt(
+			        campoSemestre.getText().trim()
+			    );
+
+			    nuevo = new Estudiante(
+			    	    nombre,
+			    	    apellido,
+			    	    carnet,
+			    	    telefono,
+			    	    correo,
+			    	    carrera,
+			    	    semestre
+			    	
+			    );
+
 			} else {
-				nuevo = new Docente(carnet, nombre, apellido, telefono, correo, rol);
+
+			    String departamento = campoCarrera.getText().trim();
+
+			    nuevo = new Docente(
+			    	    nombre,
+			    	    apellido,
+			    	    carnet,
+			    	    telefono,
+			    	    correo,
+			    	    departamento
+			    	
+			    );
 			}
 
 			usuarios.add(nuevo);
@@ -448,40 +477,39 @@ public class VentanaUsuarios extends JFrame {
 
 	private void agregarFilaTabla(Usuario u) {
 
-		String rol = (u instanceof Estudiante)
-				? "Estudiante"
-				: "Docente";
+	    String rol = (u instanceof Estudiante)
+	            ? "Estudiante"
+	            : "Docente";
 
-		String carreraDepartamento = "";
-		String semestre = "";
+	    String carreraDepartamento = "";
+	    String semestre = "";
 
-		if (u instanceof Estudiante) {
+	    if (u instanceof Estudiante) {
 
-			Estudiante est = (Estudiante) u;
+	        Estudiante est = (Estudiante) u;
 
-			carreraDepartamento = est.getCarrera();
-			semestre = String.valueOf(est.getSemestre());
+	        carreraDepartamento = est.getCarrera();
+	        semestre = String.valueOf(est.getSemestre());
 
-		} else if (u instanceof Docente) {
+	    } else if (u instanceof Docente) {
 
-			Docente doc = (Docente) u;
+	        Docente doc = (Docente) u;
 
-			carreraDepartamento = doc.getDepartamento();
-		}
+	        carreraDepartamento = doc.getDepartamento();
+	    }
 
-		modeloTabla.addRow(new Object[]{
-			u.getCarnet(),
-			rol,
-			u.getNombre(),
-			u.getApellido(),
-			u.getTelefono(),
-			u.getCorreo(),
-			carreraDepartamento,
-			semestre,
-			"No"
-		});
+	    modeloTabla.addRow(new Object[]{
+	        u.getCarnet(),
+	        rol,
+	        u.getNombre(),
+	        u.getApellido(),
+	        u.getTelefono(),
+	        u.getCorreo(),
+	        carreraDepartamento,
+	        semestre,
+	        "No"
+	    });
 	}
-
 	private void buscarUsuario(String filtro) {
 		modeloTabla.setRowCount(0);
 		for (Usuario u : usuarios) {
