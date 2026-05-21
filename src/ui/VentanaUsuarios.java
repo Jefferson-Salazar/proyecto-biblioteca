@@ -106,8 +106,6 @@ public class VentanaUsuarios extends JFrame {
 		JPanel panelFormulario = new JPanel();
 		panelFormulario.setBackground(new Color(18, 22, 30));
 
-		panelFormulario.setBounds(10, 78, 300, 490);
-
 		panelFormulario.setBounds(10, 78, 300, 620);
 
 		contenido.add(panelFormulario);
@@ -242,11 +240,11 @@ public class VentanaUsuarios extends JFrame {
 		JButton botonAgregar = new JButton("AGREGAR");
 
 		
-		// etiqueta extra
+		
 		lblCarrera = new JLabel("Carrera");
 		lblCarrera .setForeground(new Color(110, 118, 135));
 		lblCarrera .setFont(new Font("Segoe UI", Font.PLAIN, 11));
-		lblCarrera .setBounds(15, 414, 120, 16);
+		lblCarrera.setBounds(15, 385, 120, 16);
 		panelFormulario.add(lblCarrera );
 
 		campoCarrera = new JTextField();
@@ -254,14 +252,14 @@ public class VentanaUsuarios extends JFrame {
 		campoCarrera .setForeground(new Color(243, 244, 246));
 		campoCarrera .setCaretColor(Color.WHITE);
 		campoCarrera .setFont(new Font("Segoe UI", Font.PLAIN, 12));
-		campoCarrera .setBounds(15, 432, 270, 28);
+		campoCarrera.setBounds(15, 402, 270, 28);
 		panelFormulario.add(campoCarrera );
 
-		// segunda etiqueta
+		
 		lblSemestre = new JLabel("Semestre");
 		lblSemestre.setForeground(new Color(110, 118, 135));
 		lblSemestre.setFont(new Font("Segoe UI", Font.PLAIN, 11));
-		lblSemestre.setBounds(15, 474, 120, 16);
+		lblSemestre.setBounds(15, 445, 120, 16);
 		panelFormulario.add(lblSemestre);
 
 		campoSemestre = new JTextField();
@@ -269,50 +267,10 @@ public class VentanaUsuarios extends JFrame {
 		campoSemestre.setForeground(new Color(243, 244, 246));
 		campoSemestre.setCaretColor(Color.WHITE);
 		campoSemestre.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-		campoSemestre.setBounds(15, 492, 270, 28);
+		campoSemestre.setBounds(15, 462, 270, 28);
 		panelFormulario.add(campoSemestre);
 		
 		
-		botonAgregar.addActionListener(e -> {
-
-		    String carnet = campoCarnet.getText();
-		    String nombre = campoNombre.getText();
-		    String apellido = campoApellido.getText();
-		    String telefono = campoTelefono.getText();
-		    String correo = campoCorreo.getText();
-		    String carreraDepartamento = campoCarrera.getText();
-
-		    String rol = comboRol.getSelectedItem().toString();
-
-		    String semestre = "";
-
-		    if(rol.equals("Estudiante")) {
-		        semestre = campoSemestre.getText();
-		    }
-
-		    modeloTabla.addRow(new Object[] {
-		        carnet,
-		        rol,
-		        nombre,
-		        apellido,
-		        telefono,
-		        correo,
-		        carreraDepartamento,
-		        semestre,
-		        0
-		    });
-
-		    // limpiar campos
-		    campoCarnet.setText("");
-		    campoNombre.setText("");
-		    campoApellido.setText("");
-		    campoTelefono.setText("");
-		    campoCorreo.setText("");
-		    campoCarrera.setText("");
-		    campoSemestre.setText("");
-
-		});
-
 		botonAgregar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		botonAgregar.setForeground(Color.WHITE);
 		botonAgregar.setBackground(new Color(52, 199, 160));
@@ -320,26 +278,24 @@ public class VentanaUsuarios extends JFrame {
 		botonAgregar.setFocusPainted(false);
 		botonAgregar.setBorderPainted(false);
 
-		botonAgregar.setBounds(15, 386, 130, 34);
-
-		botonAgregar.setBounds(15, 570, 270, 36);
+		// BOTON AGREGAR
+		botonAgregar.setBounds(15, 530, 130, 40);
 		panelFormulario.add(botonAgregar);
 
+		// BOTON LIMPIAR
 		JButton botonLimpiar = new JButton("LIMPIAR");
 		botonLimpiar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		botonLimpiar.setForeground(new Color(180, 185, 195));
-		botonLimpiar.setBackground(new Color(35, 40, 52));
+		botonLimpiar.setForeground(Color.WHITE);
+		botonLimpiar.setBackground(new Color(52, 199, 160));
 		botonLimpiar.setFont(new Font("Segoe UI", Font.BOLD, 13));
 		botonLimpiar.setFocusPainted(false);
 		botonLimpiar.setBorderPainted(false);
-		botonLimpiar.setBounds(155, 386, 130, 34);
+		botonLimpiar.setBounds(155, 530, 130, 40);
+
 		panelFormulario.add(botonLimpiar);
 		
 		JPanel panelTabla = new JPanel();
 		panelTabla.setBackground(new Color(18, 22, 30));
-
-		panelTabla.setBounds(322, 78, 660, 490);
-
 		panelTabla.setBounds(322, 78, 900, 620);
 
 		contenido.add(panelTabla);
@@ -388,13 +344,9 @@ public class VentanaUsuarios extends JFrame {
 		modeloTabla.addColumn("Apellido");
 		modeloTabla.addColumn("Teléfono");
 		modeloTabla.addColumn("Correo");
-
-		modeloTabla.addColumn("Préstamo Activo"); // NUEVA COLUMNA
-
 		modeloTabla.addColumn("Carrera/Departamento");
 		modeloTabla.addColumn("Semestre");
-		modeloTabla.addColumn("Prestamos activos");
-
+		modeloTabla.addColumn("Préstamo Activo");
 		
 		tablaUsuarios = new JTable(modeloTabla) {
 			public boolean isCellEditable(int row, int col) { return false; }
@@ -439,6 +391,8 @@ public class VentanaUsuarios extends JFrame {
 				campoTelefono.setText("");
 				campoCorreo.setText("");
 				comboRol.setSelectedIndex(0);
+				campoCarrera.setText("");
+				campoSemestre.setText("");
 			}
 		});
 
@@ -493,10 +447,38 @@ public class VentanaUsuarios extends JFrame {
 	}
 
 	private void agregarFilaTabla(Usuario u) {
-		String rol = (u instanceof Estudiante) ? "Estudiante" : "Docente";
+
+		String rol = (u instanceof Estudiante)
+				? "Estudiante"
+				: "Docente";
+
+		String carreraDepartamento = "";
+		String semestre = "";
+
+		if (u instanceof Estudiante) {
+
+			Estudiante est = (Estudiante) u;
+
+			carreraDepartamento = est.getCarrera();
+			semestre = String.valueOf(est.getSemestre());
+
+		} else if (u instanceof Docente) {
+
+			Docente doc = (Docente) u;
+
+			carreraDepartamento = doc.getDepartamento();
+		}
+
 		modeloTabla.addRow(new Object[]{
-			u.getCarnet(), rol, u.getNombre(), u.getApellido(),
-			u.getTelefono(), u.getCorreo(), "No" // valor por defecto de Préstamo Activo
+			u.getCarnet(),
+			rol,
+			u.getNombre(),
+			u.getApellido(),
+			u.getTelefono(),
+			u.getCorreo(),
+			carreraDepartamento,
+			semestre,
+			"No"
 		});
 	}
 
