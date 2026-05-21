@@ -402,13 +402,29 @@ public class VentanaMateriales extends JFrame {
 	}
 
 	private void buscarMaterial() {
-		String filtro = campoBuscar.getText().trim().toLowerCase();
-		modeloTabla.setRowCount(0);
-		for (Material m : materiales) {
-			if (m.getCodigo().toLowerCase().contains(filtro)
-					|| m.getTitulo().toLowerCase().contains(filtro)) {
-				agregarFilaTabla(m);
-			}
-		}
+	    String filtro = campoBuscar.getText().trim().toLowerCase();
+	    modeloTabla.setRowCount(0);
+
+	    // Si el campo está vacío, muestra todos
+	    if (filtro.isEmpty()) {
+	        for (Material m : materiales) agregarFilaTabla(m);
+	        return;
+	    }
+
+	    boolean encontro = false;
+
+	    for (Material m : materiales) {
+	        if (m.getCodigo().toLowerCase().contains(filtro)
+	                || m.getTitulo().toLowerCase().contains(filtro)) {
+	            agregarFilaTabla(m);
+	            encontro = true;
+	        }
+	    }
+
+	    if (!encontro) {
+	        JOptionPane.showMessageDialog(this,
+	                "No se encontraron coincidencias para: \"" + campoBuscar.getText().trim() + "\"",
+	                "Sin resultados", JOptionPane.INFORMATION_MESSAGE);
+	    }
 	}
 }
