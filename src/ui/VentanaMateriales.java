@@ -37,7 +37,7 @@ public class VentanaMateriales extends JFrame {
 	JTextField campoAño;
 	JTextField campoCopias;
 	JTextField campoExtra;
-	JComboBox comboTipo;
+	JComboBox<String> comboTipo;
 	JLabel labelExtra;
 
 	// tabla y busqueda

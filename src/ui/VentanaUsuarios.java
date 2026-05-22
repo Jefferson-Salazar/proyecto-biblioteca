@@ -511,13 +511,29 @@ public class VentanaUsuarios extends JFrame {
 	    });
 	}
 	private void buscarUsuario(String filtro) {
-		modeloTabla.setRowCount(0);
-		for (Usuario u : usuarios) {
-			if (u.getCarnet().toLowerCase().contains(filtro)
-				|| u.getNombre().toLowerCase().contains(filtro)
-				|| u.getApellido().toLowerCase().contains(filtro)) {
-				agregarFilaTabla(u);
-			}
-		}
+	    modeloTabla.setRowCount(0);
+
+	    // Si el campo está vacío, muestra todos
+	    if (filtro.isEmpty()) {
+	        for (Usuario u : usuarios) agregarFilaTabla(u);
+	        return;
+	    }
+
+	    boolean encontro = false;
+
+	    for (Usuario u : usuarios) {
+	        if (u.getCarnet().toLowerCase().contains(filtro)
+	                || u.getNombre().toLowerCase().contains(filtro)
+	                || u.getApellido().toLowerCase().contains(filtro)) {
+	            agregarFilaTabla(u);
+	            encontro = true;
+	        }
+	    }
+
+	    if (!encontro) {
+	        JOptionPane.showMessageDialog(this,
+	                "No se encontraron coincidencias para: \"" + filtro + "\"",
+	                "Sin resultados", JOptionPane.INFORMATION_MESSAGE);
+	    }
 	}
 }

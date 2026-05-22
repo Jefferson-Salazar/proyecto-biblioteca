@@ -436,21 +436,47 @@ public class VentanaPrestamos extends JFrame {
 	}
 
 	private void buscarPrestamo(String filtro) {
-		modeloTabla.setRowCount(0);
-		for (Prestamo p : prestamos) {
-			if (p.getId().toLowerCase().contains(filtro)
-					|| p.getUsuario().getCarnet().toLowerCase().contains(filtro)
-					|| p.getMaterial().getCodigo().toLowerCase().contains(filtro)) {
-				modeloTabla.addRow(new Object[]{
-					p.getId(),
-					p.getUsuario().getCarnet(),
-					p.getUsuario().getNombre() + " " + p.getUsuario().getApellido(),
-					p.getMaterial().getCodigo(),
-					p.getMaterial().getTitulo(),
-					p.getFechaPrestamo(),
-					p.isDevuelto() ? "Devuelto" : "Activo"
-				});
-			}
-		}
+	    modeloTabla.setRowCount(0);
+
+	    // Si el campo está vacío, muestra todos
+	    if (filtro.isEmpty()) {
+	        for (Prestamo p : prestamos) {
+	            modeloTabla.addRow(new Object[]{
+	                p.getId(),
+	                p.getUsuario().getCarnet(),
+	                p.getUsuario().getNombre() + " " + p.getUsuario().getApellido(),
+	                p.getMaterial().getCodigo(),
+	                p.getMaterial().getTitulo(),
+	                p.getFechaPrestamo(),
+	                p.isDevuelto() ? "Devuelto" : "Activo"
+	            });
+	        }
+	        return;
+	    }
+
+	    boolean encontro = false;
+
+	    for (Prestamo p : prestamos) {
+	        if (p.getId().toLowerCase().contains(filtro)
+	                || p.getUsuario().getCarnet().toLowerCase().contains(filtro)
+	                || p.getMaterial().getCodigo().toLowerCase().contains(filtro)) {
+	            modeloTabla.addRow(new Object[]{
+	                p.getId(),
+	                p.getUsuario().getCarnet(),
+	                p.getUsuario().getNombre() + " " + p.getUsuario().getApellido(),
+	                p.getMaterial().getCodigo(),
+	                p.getMaterial().getTitulo(),
+	                p.getFechaPrestamo(),
+	                p.isDevuelto() ? "Devuelto" : "Activo"
+	            });
+	            encontro = true;
+	        }
+	    }
+
+	    if (!encontro) {
+	        JOptionPane.showMessageDialog(this,
+	                "No se encontraron coincidencias para: \"" + filtro + "\"",
+	                "Sin resultados", JOptionPane.INFORMATION_MESSAGE);
+	    }
 	}
 }
