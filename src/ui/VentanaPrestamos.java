@@ -22,6 +22,7 @@ import java.awt.Cursor;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JComboBox;
 
 public class VentanaPrestamos extends JFrame {
 
@@ -36,9 +37,9 @@ public class VentanaPrestamos extends JFrame {
 	private List<Prestamo> prestamos = new ArrayList<>();
 	private int contadorId = 1;
 
-	// campos prestamo
-	JTextField campoCarnetPrestamo;
-	JTextField campoCodigoPrestamo;
+	// combos prestamo
+	JComboBox<String> comboUsuarios;
+	JComboBox<String> comboMateriales;
 
 	// campo devolucion
 	JTextField campoIdDevolucion;
@@ -119,33 +120,41 @@ public class VentanaPrestamos extends JFrame {
 		lblNuevoPrestamo.setBounds(15, 14, 200, 22);
 		panelPrestamo.add(lblNuevoPrestamo);
 
-		JLabel lblCarnet = new JLabel("Carnet del usuario *");
-		lblCarnet.setForeground(new Color(110, 118, 135));
-		lblCarnet.setFont(new Font("Segoe UI", Font.PLAIN, 11));
-		lblCarnet.setBounds(15, 44, 180, 16);
-		panelPrestamo.add(lblCarnet);
+		JLabel lblUsuario = new JLabel("Usuario *");
+		lblUsuario.setForeground(new Color(110, 118, 135));
+		lblUsuario.setFont(new Font("Segoe UI", Font.PLAIN, 11));
+		lblUsuario.setBounds(15, 44, 180, 16);
+		panelPrestamo.add(lblUsuario);
 
-		campoCarnetPrestamo = new JTextField();
-		campoCarnetPrestamo.setBackground(new Color(10, 12, 16));
-		campoCarnetPrestamo.setForeground(new Color(243, 244, 246));
-		campoCarnetPrestamo.setCaretColor(Color.WHITE);
-		campoCarnetPrestamo.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-		campoCarnetPrestamo.setBounds(15, 61, 270, 26);
-		panelPrestamo.add(campoCarnetPrestamo);
+		comboUsuarios = new JComboBox<>();
+		comboUsuarios.setBackground(new Color(10, 12, 16));
+		comboUsuarios.setForeground(new Color(243, 244, 246));
+		comboUsuarios.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+		comboUsuarios.setBounds(15, 61, 270, 26);
+		panelPrestamo.add(comboUsuarios);
 
-		JLabel lblCodigo = new JLabel("Código del material *");
-		lblCodigo.setForeground(new Color(110, 118, 135));
-		lblCodigo.setFont(new Font("Segoe UI", Font.PLAIN, 11));
-		lblCodigo.setBounds(15, 100, 180, 16);
-		panelPrestamo.add(lblCodigo);
+		// cargar usuarios en el combo
+		for (Usuario u : usuarios) {
+		    comboUsuarios.addItem(u.getCarnet() + " - " + u.getNombre() + " " + u.getApellido());
+		}
 
-		campoCodigoPrestamo = new JTextField();
-		campoCodigoPrestamo.setBackground(new Color(10, 12, 16));
-		campoCodigoPrestamo.setForeground(new Color(243, 244, 246));
-		campoCodigoPrestamo.setCaretColor(Color.WHITE);
-		campoCodigoPrestamo.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-		campoCodigoPrestamo.setBounds(15, 117, 270, 26);
-		panelPrestamo.add(campoCodigoPrestamo);
+		JLabel lblMaterial = new JLabel("Material *");
+		lblMaterial.setForeground(new Color(110, 118, 135));
+		lblMaterial.setFont(new Font("Segoe UI", Font.PLAIN, 11));
+		lblMaterial.setBounds(15, 100, 180, 16);
+		panelPrestamo.add(lblMaterial);
+
+		comboMateriales = new JComboBox<>();
+		comboMateriales.setBackground(new Color(10, 12, 16));
+		comboMateriales.setForeground(new Color(243, 244, 246));
+		comboMateriales.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+		comboMateriales.setBounds(15, 117, 270, 26);
+		panelPrestamo.add(comboMateriales);
+
+		// cargar materiales disponibles en el combo
+		for (Material m : materiales) {
+		    comboMateriales.addItem(m.getCodigo() + " - " + m.getTitulo());
+		}
 
 		JButton botonPrestar = new JButton("PRESTAR");
 		botonPrestar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -288,8 +297,8 @@ public class VentanaPrestamos extends JFrame {
 
 		botonLimpiarPrestamo.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent e) {
-				campoCarnetPrestamo.setText("");
-				campoCodigoPrestamo.setText("");
+				comboUsuarios.setSelectedIndex(0);
+				comboMateriales.setSelectedIndex(0);
 			}
 		});
 
@@ -307,85 +316,78 @@ public class VentanaPrestamos extends JFrame {
 	}
 
 	private void registrarPrestamo() {
-		String carnet = campoCarnetPrestamo.getText().trim();
-		String codigo = campoCodigoPrestamo.getText().trim();
+	    if (comboUsuarios.getItemCount() == 0 || comboMateriales.getItemCount() == 0) {
+	        JOptionPane.showMessageDialog(this,
+	            "No hay usuarios o materiales registrados.",
+	            "Sin datos", JOptionPane.WARNING_MESSAGE);
+	        return;
+	    }
 
-		if (carnet.isEmpty() || codigo.isEmpty()) {
-			JOptionPane.showMessageDialog(this,
-				"Carnet y código son obligatorios.",
-				"Campos vacíos", JOptionPane.WARNING_MESSAGE);
-			return;
-		}
+	    // extraer carnet y código del texto seleccionado
+	    String itemUsuario   = comboUsuarios.getSelectedItem().toString();
+	    String itemMaterial  = comboMateriales.getSelectedItem().toString();
+	    String carnet = itemUsuario.split(" - ")[0].trim();
+	    String codigo = itemMaterial.split(" - ")[0].trim();
 
-		// buscar usuario
-		Usuario usuario = null;
-		for (Usuario u : usuarios) {
-			if (u.getCarnet().equalsIgnoreCase(carnet)) {
-				usuario = u;
-				break;
-			}
-		}
-		if (usuario == null) {
-			JOptionPane.showMessageDialog(this,
-				"No existe un usuario con ese carnet.",
-				"Usuario no encontrado", JOptionPane.ERROR_MESSAGE);
-			return;
-		}
+	    // buscar usuario
+	    Usuario usuario = null;
+	    for (Usuario u : usuarios) {
+	        if (u.getCarnet().equalsIgnoreCase(carnet)) {
+	            usuario = u;
+	            break;
+	        }
+	    }
 
-		// buscar material
-		Material material = null;
-		for (Material m : materiales) {
-			if (m.getCodigo().equalsIgnoreCase(codigo)) {
-				material = m;
-				break;
-			}
-		}
-		if (material == null) {
-			JOptionPane.showMessageDialog(this,
-				"No existe un material con ese código.",
-				"Material no encontrado", JOptionPane.ERROR_MESSAGE);
-			return;
-		}
+	    // buscar material
+	    Material material = null;
+	    for (Material m : materiales) {
+	        if (m.getCodigo().equalsIgnoreCase(codigo)) {
+	            material = m;
+	            break;
+	        }
+	    }
 
-		// validar que el usuario no tenga ya un prestamo activo
-		for (Prestamo p : prestamos) {
-			if (p.getUsuario().getCarnet().equalsIgnoreCase(carnet) && !p.isDevuelto()) {
-				JOptionPane.showMessageDialog(this,
-					"Este usuario ya tiene un préstamo activo.",
-					"Límite alcanzado", JOptionPane.WARNING_MESSAGE);
-				return;
-			}
-		}
+	    // validar prestamo activo
+	    for (Prestamo p : prestamos) {
+	        if (p.getUsuario().getCarnet().equalsIgnoreCase(carnet) && !p.isDevuelto()) {
+	            JOptionPane.showMessageDialog(this,
+	                "Este usuario ya tiene un préstamo activo.",
+	                "Límite alcanzado", JOptionPane.WARNING_MESSAGE);
+	            return;
+	        }
+	    }
 
-		// validar disponibilidad
-		if (!material.estaDisponible()) {
-			JOptionPane.showMessageDialog(this,
-				"El material no tiene copias disponibles.",
-				"Sin disponibilidad", JOptionPane.WARNING_MESSAGE);
-			return;
-		}
+	    // validar disponibilidad
+	    if (!material.estaDisponible()) {
+	        JOptionPane.showMessageDialog(this,
+	            "El material no tiene copias disponibles.",
+	            "Sin disponibilidad", JOptionPane.WARNING_MESSAGE);
+	        return;
+	    }
 
-		// realizar prestamo
-		material.prestar();
-		String fecha = LocalDate.now().toString();
-		String id = "P" + String.format("%03d", contadorId++);
-		Prestamo nuevo = new Prestamo(id, usuario, material, fecha);
-		prestamos.add(nuevo);
+	    // realizar prestamo
+	    material.prestar();
+	    String fecha = LocalDate.now().toString();
+	    String id = "P" + String.format("%03d", contadorId++);
+	    Prestamo nuevo = new Prestamo(id, usuario, material, fecha);
+	    prestamos.add(nuevo);
 
-		modeloTabla.addRow(new Object[]{
-			id,
-			usuario.getCarnet(),
-			usuario.getNombre() + " " + usuario.getApellido(),
-			material.getCodigo(),
-			material.getTitulo(),
-			fecha,
-			"Activo"
-		});
+	    modeloTabla.addRow(new Object[]{
+	        id,
+	        usuario.getCarnet(),
+	        usuario.getNombre() + " " + usuario.getApellido(),
+	        material.getCodigo(),
+	        material.getTitulo(),
+	        fecha,
+	        "Activo"
+	    });
 
-		campoCarnetPrestamo.setText("");
-		campoCodigoPrestamo.setText("");
-		JOptionPane.showMessageDialog(this, "Préstamo registrado correctamente.");
+	    comboUsuarios.setSelectedIndex(0);
+	    comboMateriales.setSelectedIndex(0);
+	    JOptionPane.showMessageDialog(this, "Préstamo registrado correctamente.");
 	}
+
+
 
 	private void registrarDevolucion() {
 		String id = campoIdDevolucion.getText().trim();

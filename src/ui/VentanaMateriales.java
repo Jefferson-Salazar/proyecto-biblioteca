@@ -26,7 +26,7 @@ public class VentanaMateriales extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contenido;
 
-	// datos - AHORA RECIBE LA LISTA COMPARTIDA
+	// datos 
 	private List<Material> materiales;
 	private DefaultTableModel modeloTabla;
 
