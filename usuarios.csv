@@ -1,0 +1,3 @@
+tipo,nombre,apellido,carnet,telefono,correo,extra1,extra2
+Estudiante,Diego,López,,4567-8921,diego.ramirez25@gmail.com,Ingeniería en Sistemas,2
+Docente,Pedro,Sarceño,PROF001,4578-9621,pedro.sarceño@gmail.com,Departamento de Sistemas,

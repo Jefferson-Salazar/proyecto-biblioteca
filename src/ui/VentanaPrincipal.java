@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import dominio.Material;
 import dominio.Usuario;
+import dominio.Prestamo;
+import persistencia.Persistencia;
 
 public class VentanaPrincipal extends JFrame {
 
@@ -21,7 +23,8 @@ public class VentanaPrincipal extends JFrame {
 
 	private List<Material> materiales = new ArrayList<>();
 	private List<Usuario> usuarios = new ArrayList<>();
-
+	private List<Prestamo> listaPrestamos = new ArrayList<>();
+	
 	public static void main(String[] args) {
 		java.awt.EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -203,8 +206,23 @@ public class VentanaPrincipal extends JFrame {
 			new VentanaUsuarios(usuarios).setVisible(true);
 		});
 
-		botonPrestamos.addActionListener(e -> {
-			new VentanaPrestamos(materiales, usuarios).setVisible(true);
+		botonPrestamos.addActionListener(eventoBoton -> {
+		    new VentanaPrestamos(materiales, usuarios, listaPrestamos).setVisible(true);
+		});
+		
+		// ── CARGAR DATOS AL INICIAR LA APLICACIÓN ────────────────
+		Persistencia.cargarMateriales(materiales);
+		Persistencia.cargarUsuarios(usuarios);
+		Persistencia.cargarPrestamos(listaPrestamos, materiales, usuarios);
+
+		// ── GUARDAR DATOS AL CERRAR LA APLICACIÓN ────────────────
+		addWindowListener(new java.awt.event.WindowAdapter() {
+		    @Override
+		    public void windowClosing(java.awt.event.WindowEvent eventoAlCerrar) {
+		        Persistencia.guardarMateriales(materiales);
+		        Persistencia.guardarUsuarios(usuarios);
+		        Persistencia.guardarPrestamos(listaPrestamos);
+		    }
 		});
 	}
 }

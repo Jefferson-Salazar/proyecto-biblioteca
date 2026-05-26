@@ -34,7 +34,7 @@ public class VentanaPrestamos extends JFrame {
 	private List<Usuario> usuarios;
 
 	// lista propia de prestamos
-	private List<Prestamo> prestamos = new ArrayList<>();
+	private List<Prestamo> listaPrestamos;
 	private int contadorId = 1;
 
 	// combos prestamo
@@ -49,9 +49,10 @@ public class VentanaPrestamos extends JFrame {
 	DefaultTableModel modeloTabla;
 
 	// recibe las listas de materiales y usuarios para buscar en ellas
-	public VentanaPrestamos(List<Material> materiales, List<Usuario> usuarios) {
-		this.materiales = materiales;
-		this.usuarios = usuarios;
+	public VentanaPrestamos(List<Material> listaMateriales, List<Usuario> listaUsuarios, List<Prestamo> listaPrestamosExistentes) {
+	    this.materiales     = listaMateriales;
+	    this.usuarios       = listaUsuarios;
+	    this.listaPrestamos = listaPrestamosExistentes;
 
 		setTitle("Préstamos y Devoluciones");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -348,7 +349,7 @@ public class VentanaPrestamos extends JFrame {
 	    }
 
 	    // validar prestamo activo
-	    for (Prestamo p : prestamos) {
+	    for (Prestamo p : listaPrestamos) {
 	        if (p.getUsuario().getCarnet().equalsIgnoreCase(carnet) && !p.isDevuelto()) {
 	            JOptionPane.showMessageDialog(this,
 	                "Este usuario ya tiene un préstamo activo.",
@@ -370,7 +371,7 @@ public class VentanaPrestamos extends JFrame {
 	    String fecha = LocalDate.now().toString();
 	    String id = "P" + String.format("%03d", contadorId++);
 	    Prestamo nuevo = new Prestamo(id, usuario, material, fecha);
-	    prestamos.add(nuevo);
+	    listaPrestamos.add(nuevo);
 
 	    modeloTabla.addRow(new Object[]{
 	        id,
@@ -401,7 +402,7 @@ public class VentanaPrestamos extends JFrame {
 
 		// buscar prestamo
 		Prestamo prestamo = null;
-		for (Prestamo p : prestamos) {
+		for (Prestamo p : listaPrestamos) {
 			if (p.getId().equalsIgnoreCase(id)) {
 				prestamo = p;
 				break;
@@ -442,7 +443,7 @@ public class VentanaPrestamos extends JFrame {
 
 	    // Si el campo está vacío, muestra todos
 	    if (filtro.isEmpty()) {
-	        for (Prestamo p : prestamos) {
+	        for (Prestamo p : listaPrestamos) {
 	            modeloTabla.addRow(new Object[]{
 	                p.getId(),
 	                p.getUsuario().getCarnet(),
@@ -458,7 +459,7 @@ public class VentanaPrestamos extends JFrame {
 
 	    boolean encontro = false;
 
-	    for (Prestamo p : prestamos) {
+	    for (Prestamo p : listaPrestamos) {
 	        if (p.getId().toLowerCase().contains(filtro)
 	                || p.getUsuario().getCarnet().toLowerCase().contains(filtro)
 	                || p.getMaterial().getCodigo().toLowerCase().contains(filtro)) {
