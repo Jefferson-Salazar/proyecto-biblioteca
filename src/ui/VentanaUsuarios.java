@@ -412,6 +412,25 @@ public class VentanaUsuarios extends JFrame {
 			String correo = campoCorreo.getText().trim();
 			String rol = comboRol.getSelectedItem().toString();
 
+			if(carnet.isEmpty() ||
+			   nombre.isEmpty() ||
+			   apellido.isEmpty() ||
+			   telefono.isEmpty() ||
+			   correo.isEmpty() ||
+			   campoCarrera.getText().trim().isEmpty() ||
+			   (rol.equals("Estudiante") &&
+			    campoSemestre.getText().trim().isEmpty())) {
+
+			    JOptionPane.showMessageDialog(
+			        this,
+			        "Todos los campos son obligatorios",
+			        "Error",
+			        JOptionPane.ERROR_MESSAGE
+			    );
+
+			    return;
+			}
+			
 			for (Usuario u : usuarios) {
 				if (u.getCarnet().equalsIgnoreCase(carnet)) {
 					JOptionPane.showMessageDialog(this,

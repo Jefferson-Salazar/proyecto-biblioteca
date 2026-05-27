@@ -1,4 +1,4 @@
 idPrestamo,carnetUsuario,codigoMaterial,fechaPrestamo,yaFueDevuelto
-P001,,LIB001,2026-05-26,true
+P001,,LIB001,2026-05-26,false
 P001,,LIB001,2026-05-26,false
 P001,PROF001,LIB001,2026-05-26,false

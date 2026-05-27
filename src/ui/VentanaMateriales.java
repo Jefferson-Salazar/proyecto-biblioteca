@@ -345,54 +345,112 @@ public class VentanaMateriales extends JFrame {
 	}
 
 	private void registrarMaterial() {
-		try {
-			String codigo = campoCodigo.getText().trim();
-			String titulo = campoTitulo.getText().trim();
-			String autor = campoAutor.getText().trim();
-			int anio = Integer.parseInt(campoAño.getText().trim());
-			int copias = Integer.parseInt(campoCopias.getText().trim());
-			String extra = campoExtra.getText().trim();
+		
+		    try {
 
-			for (Material m : materiales) {
-				if (m.getCodigo().equalsIgnoreCase(codigo)) {
-					JOptionPane.showMessageDialog(this,
-							"Ya existe un material con ese código.",
-							"Código duplicado", JOptionPane.WARNING_MESSAGE);
-					return;
-				}
-			}
+		        String codigo = campoCodigo.getText().trim();
+		        String titulo = campoTitulo.getText().trim();
+		        String autor = campoAutor.getText().trim();
+		        String extra = campoExtra.getText().trim();
 
-			Material nuevo;
-			if (comboTipo.getSelectedItem().equals("Libro")) {
-				nuevo = new Libro(codigo, titulo, autor, anio, copias, extra, "");
-			} else {
-				int edicion = extra.isEmpty() ? 1 : Integer.parseInt(extra);
-				nuevo = new Revista(codigo, titulo, autor, anio, copias, edicion);
-			}
+		        if(codigo.isEmpty() ||
+		           titulo.isEmpty() ||
+		           autor.isEmpty() ||
+		           campoAño.getText().trim().isEmpty() ||
+		           campoCopias.getText().trim().isEmpty() ||
+		           extra.isEmpty()) {
 
-			materiales.add(nuevo);
-			agregarFilaTabla(nuevo);
+		            JOptionPane.showMessageDialog(
+		                this,
+		                "Todos los campos son obligatorios",
+		                "Error",
+		                JOptionPane.ERROR_MESSAGE
+		            );
 
-			campoCodigo.setText("");
-			campoTitulo.setText("");
-			campoAutor.setText("");
-			campoAño.setText("");
-			campoCopias.setText("");
-			campoExtra.setText("");
-			comboTipo.setSelectedIndex(0);
+		            return;
+		        }
 
-			JOptionPane.showMessageDialog(this, "Material registrado correctamente.");
+		        int anio = Integer.parseInt(campoAño.getText().trim());
+		        int copias = Integer.parseInt(campoCopias.getText().trim());
 
-		} catch (NumberFormatException ex) {
-			JOptionPane.showMessageDialog(this,
-					"Año y Copias deben ser numeros validos.",
-					"Error de formato", JOptionPane.ERROR_MESSAGE);
-		} catch (IllegalArgumentException ex) {
-			JOptionPane.showMessageDialog(this,
-					ex.getMessage(), "Error de validación", JOptionPane.ERROR_MESSAGE);
+		        for (Material m : materiales) {
+
+		            if (m.getCodigo().equalsIgnoreCase(codigo)) {
+
+		                JOptionPane.showMessageDialog(
+		                    this,
+		                    "Ya existe un material con ese código.",
+		                    "Código duplicado",
+		                    JOptionPane.WARNING_MESSAGE
+		                );
+
+		                return;
+		            }
+		        }
+
+		        Material nuevo;
+
+		        if (comboTipo.getSelectedItem().equals("Libro")) {
+
+		            nuevo = new Libro(
+		                codigo,
+		                titulo,
+		                autor,
+		                anio,
+		                copias,
+		                extra,
+		                ""
+		            );
+
+		        } else {
+
+		            int edicion = Integer.parseInt(extra);
+
+		            nuevo = new Revista(
+		                codigo,
+		                titulo,
+		                autor,
+		                anio,
+		                copias,
+		                edicion
+		            );
+		        }
+
+		        materiales.add(nuevo);
+		        agregarFilaTabla(nuevo);
+
+		        campoCodigo.setText("");
+		        campoTitulo.setText("");
+		        campoAutor.setText("");
+		        campoAño.setText("");
+		        campoCopias.setText("");
+		        campoExtra.setText("");
+		        comboTipo.setSelectedIndex(0);
+
+		        JOptionPane.showMessageDialog(
+		            this,
+		            "Material registrado correctamente."
+		        );
+
+		    } catch (NumberFormatException ex) {
+
+		        JOptionPane.showMessageDialog(
+		            this,
+		            "Año, Copias y Edición deben ser números válidos.",
+		            "Error de formato",
+		            JOptionPane.ERROR_MESSAGE
+		        );
+
+		    } catch (IllegalArgumentException ex) {
+
+		        JOptionPane.showMessageDialog(
+		            this,
+		            ex.getMessage(),
+		            "Error de validación",
+		            JOptionPane.ERROR_MESSAGE
+		        );
+		    }
 		}
-	}
-
 	private void agregarFilaTabla(Material m) {
 		String tipo = (m instanceof Libro) ? "Libro" : "Revista";
 		modeloTabla.addRow(new Object[]{

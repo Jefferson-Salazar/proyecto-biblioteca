@@ -178,43 +178,53 @@ public class Persistencia {
     }
 
     //CARGAR PRÉSTAMOS
-    public static void cargarPrestamos(List<Prestamo>  listaPrestamos,
-                                       List<Material>  listaMateriales,
-                                       List<Usuario>   listaUsuarios) {
-        File archivoCsv = new File(ARCHIVO_PRESTAMOS);
-        if (!archivoCsv.exists()) return;
+    public static void cargarPrestamos(List<Prestamo> listaPrestamos,
+            List<Material> listaMateriales,
+            List<Usuario> listaUsuarios) {
 
-        try (BufferedReader lector = new BufferedReader(new FileReader(archivoCsv))) {
-            lector.readLine(); // primera línea es el encabezado, se omite
+File archivoCsv = new File(ARCHIVO_PRESTAMOS);
+if (!archivoCsv.exists()) return;
 
-            String lineaActual;
-            while ((lineaActual = lector.readLine()) != null) {
-                String[] columnas = lineaActual.split(",", -1);
-                if (columnas.length < 5) continue;
+try (BufferedReader lector = new BufferedReader(new FileReader(archivoCsv))) {
 
-                String  idPrestamo      = columnas[0];
-                String  carnetUsuario   = columnas[1];
-                String  codigoMaterial  = columnas[2];
-                String  fechaPrestamo   = columnas[3];
-                boolean yaFueDevuelto   = Boolean.parseBoolean(columnas[4]);
+lector.readLine();
 
-                Usuario  usuarioEncontrado  = buscarUsuarioPorCarnet(listaUsuarios, carnetUsuario);
-                Material materialEncontrado = buscarMaterialPorCodigo(listaMateriales, codigoMaterial);
+String lineaActual;
 
-                if (usuarioEncontrado == null || materialEncontrado == null) continue;
+while ((lineaActual = lector.readLine()) != null) {
 
-                Prestamo prestamoRecuperado = new Prestamo(idPrestamo, usuarioEncontrado,
-                                                           materialEncontrado, fechaPrestamo);
-                if (yaFueDevuelto) {
-                    prestamoRecuperado.devolver();
-                }
-                listaPrestamos.add(prestamoRecuperado);
-            }
-        } catch (IOException error) {
-            System.err.println("Error al cargar préstamos: " + error.getMessage());
+String[] columnas = lineaActual.split(",", -1);
+
+if (columnas.length < 5) continue;
+
+String idPrestamo     = columnas[0];
+String carnetUsuario  = columnas[1];
+String codigoMaterial = columnas[2];
+String fechaPrestamo  = columnas[3];
+
+Usuario usuarioEncontrado =
+buscarUsuarioPorCarnet(listaUsuarios, carnetUsuario);
+
+Material materialEncontrado =
+buscarMaterialPorCodigo(listaMateriales, codigoMaterial);
+
+Prestamo prestamoRecuperado = new Prestamo(
+idPrestamo,
+usuarioEncontrado,
+materialEncontrado,
+fechaPrestamo
+);
+
+listaPrestamos.add(prestamoRecuperado);
         }
-    }
 
+       } catch (IOException error) {
+
+       System.err.println(
+       "Error al cargar préstamos: " + error.getMessage());
+
+}
+}
     //MÉTODOS PRIVADOS DE APOYO
 
     /**
