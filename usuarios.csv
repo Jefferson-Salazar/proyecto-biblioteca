@@ -1,3 +1,7 @@
 tipo,nombre,apellido,carnet,telefono,correo,extra1,extra2
 Estudiante,Diego,López,,4567-8921,diego.ramirez25@gmail.com,Ingeniería en Sistemas,2
 Docente,Pedro,Sarceño,PROF001,4578-9621,pedro.sarceño@gmail.com,Departamento de Sistemas,
+Estudiante,Giselle,Calvillo,0905-25-14179,57313326,gigis@gmail.com,Ingenieria en Sistemas,3
+Docente,Briseyda,Pivaral,0905-21-2345,42316761,daseybri@gmail.com,Derecho,
+Estudiante,Mario,Hernandez,0905-24-56467,34590721,marioh@gmail.com,Ingenieria Civil,2
+Estudiante,Mario,Figueroa,0905-23-2356,34567866,fmario@gmail.com,Ingenieria Civil,5

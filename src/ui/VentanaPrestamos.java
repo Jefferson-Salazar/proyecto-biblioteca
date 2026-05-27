@@ -35,7 +35,7 @@ public class VentanaPrestamos extends JFrame {
 
 	// lista propia de prestamos
 	private List<Prestamo> listaPrestamos;
-	private int contadorId = 1;
+	private static int contadorId = 1;
 
 	// combos prestamo
 	JComboBox<String> comboUsuarios;
@@ -53,6 +53,7 @@ public class VentanaPrestamos extends JFrame {
 	    this.materiales     = listaMateriales;
 	    this.usuarios       = listaUsuarios;
 	    this.listaPrestamos = listaPrestamosExistentes;
+	    
 
 		setTitle("Préstamos y Devoluciones");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -369,7 +370,9 @@ public class VentanaPrestamos extends JFrame {
 	    // realizar prestamo
 	    material.prestar();
 	    String fecha = LocalDate.now().toString();
-	    String id = "P" + String.format("%03d", contadorId++);
+	    String id = "P" + String.format("%03d", ++contadorId);
+	    System.out.println("Contador actual: " + contadorId);
+	    System.out.println("ID generado: " + id);
 	    Prestamo nuevo = new Prestamo(id, usuario, material, fecha);
 	    listaPrestamos.add(nuevo);
 
