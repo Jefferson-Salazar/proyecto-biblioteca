@@ -30,8 +30,8 @@ public class VentanaUsuarios extends JFrame {
 	private List<Usuario> usuarios;
 
 	// campos del formulario
-	JTextField campoCarrera;
-	JTextField campoSemestre;
+	JComboBox<String> comboCarrera;
+	JComboBox<String> comboSemestre;
 
 	JLabel lblCarrera;
 	JLabel lblSemestre;
@@ -141,26 +141,24 @@ public class VentanaUsuarios extends JFrame {
 		JLabel lblCarnet = new JLabel("Carnet");
 		comboRol.addActionListener(e -> {
 
-		    String rol = comboRol.getSelectedItem().toString();
+			
 
-		    if(rol.equals("Estudiante")) {
+			    String rol = comboRol.getSelectedItem().toString();
 
-		        lblCarrera.setText("Carrera");
+			    if (rol.equals("Estudiante")) {
 
-		        lblSemestre.setVisible(true);
-		        campoSemestre.setVisible(true);
+			        lblCarrera.setText("Carrera");
+			        lblSemestre.setVisible(true);
+			        comboSemestre.setVisible(true);
 
-		    } else {
+			    } else {
 
-		        lblCarrera.setText("Departamento");
+			        lblCarrera.setText("Departamento");
 
-		        lblSemestre.setVisible(false);
-		        campoSemestre.setVisible(false);
-
-		        campoSemestre.setText("");
-		    }
-
-		});
+			        lblSemestre.setVisible(false);
+			        comboSemestre.setVisible(false);
+			    }
+			});
 		
 		
 		
@@ -247,13 +245,25 @@ public class VentanaUsuarios extends JFrame {
 		lblCarrera.setBounds(15, 385, 120, 16);
 		panelFormulario.add(lblCarrera );
 
-		campoCarrera = new JTextField();
-		campoCarrera .setBackground(new Color(10, 12, 16));
-		campoCarrera .setForeground(new Color(243, 244, 246));
-		campoCarrera .setCaretColor(Color.WHITE);
-		campoCarrera .setFont(new Font("Segoe UI", Font.PLAIN, 12));
-		campoCarrera.setBounds(15, 402, 270, 28);
-		panelFormulario.add(campoCarrera );
+		String[] carreras = {
+				"Ingeniería en Sistemas",
+			    "Ingeniería Civil",
+			    "Ingeniería Industrial",
+			    "Medicina",
+			    "Derecho",
+			    "Arquitectura",
+			    "Administración de Empresas",
+			    "Contaduría Pública",
+			    "Psicología",
+			    "Diseño Gráfico"
+			    
+			};
+
+			comboCarrera = new JComboBox<>(carreras);
+			comboCarrera.setBackground(new Color(10, 12, 16));
+			comboCarrera.setForeground(new Color(243, 244, 246));
+			comboCarrera.setBounds(15, 402, 270, 28);
+			panelFormulario.add(comboCarrera);
 
 		
 		lblSemestre = new JLabel("Semestre");
@@ -262,13 +272,15 @@ public class VentanaUsuarios extends JFrame {
 		lblSemestre.setBounds(15, 445, 120, 16);
 		panelFormulario.add(lblSemestre);
 
-		campoSemestre = new JTextField();
-		campoSemestre.setBackground(new Color(10, 12, 16));
-		campoSemestre.setForeground(new Color(243, 244, 246));
-		campoSemestre.setCaretColor(Color.WHITE);
-		campoSemestre.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-		campoSemestre.setBounds(15, 462, 270, 28);
-		panelFormulario.add(campoSemestre);
+		String[] semestres = {
+			    "1","2","3","4","5","6","7","8","9","10"
+			};
+
+			comboSemestre = new JComboBox<>(semestres);
+			comboSemestre.setBackground(new Color(10, 12, 16));
+			comboSemestre.setForeground(new Color(243, 244, 246));
+			comboSemestre.setBounds(15, 462, 270, 28);
+			panelFormulario.add(comboSemestre);
 		
 		
 		botonAgregar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -391,8 +403,8 @@ public class VentanaUsuarios extends JFrame {
 				campoTelefono.setText("");
 				campoCorreo.setText("");
 				comboRol.setSelectedIndex(0);
-				campoCarrera.setText("");
-				campoSemestre.setText("");
+				comboCarrera.setSelectedIndex(0);
+				comboSemestre.setSelectedIndex(0);
 			}
 		});
 
@@ -417,10 +429,9 @@ public class VentanaUsuarios extends JFrame {
 			   apellido.isEmpty() ||
 			   telefono.isEmpty() ||
 			   correo.isEmpty() ||
-			   campoCarrera.getText().trim().isEmpty() ||
-			   (rol.equals("Estudiante") &&
-			    campoSemestre.getText().trim().isEmpty())) {
-
+			   comboCarrera.getSelectedItem() == null ||
+			    (rol.equals("Estudiante") &&
+			     comboSemestre.getSelectedItem() == null)) {
 			    JOptionPane.showMessageDialog(
 			        this,
 			        "Todos los campos son obligatorios",
@@ -444,11 +455,11 @@ public class VentanaUsuarios extends JFrame {
 
 			if (rol.equals("Estudiante")) {
 
-			    String carrera = campoCarrera.getText().trim();
+				String carrera = comboCarrera.getSelectedItem().toString();
 
-			    int semestre = Integer.parseInt(
-			        campoSemestre.getText().trim()
-			    );
+				int semestre = Integer.parseInt(comboSemestre.getSelectedItem().toString());
+				
+			    
 
 			    nuevo = new Estudiante(
 			    	    nombre,
@@ -463,7 +474,7 @@ public class VentanaUsuarios extends JFrame {
 
 			} else {
 
-			    String departamento = campoCarrera.getText().trim();
+				String departamento = comboCarrera.getSelectedItem().toString();
 
 			    nuevo = new Docente(
 			    	    nombre,
