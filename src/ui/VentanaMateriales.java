@@ -485,4 +485,12 @@ public class VentanaMateriales extends JFrame {
 	                "Sin resultados", JOptionPane.INFORMATION_MESSAGE);
 	    }
 	}
+	
+	private void actualizarTablaMateriales() {
+	    modeloTabla.setRowCount(0);
+
+	    for (Material m : materiales) {
+	        agregarFilaTabla(m);
+	    }
+	}
 }

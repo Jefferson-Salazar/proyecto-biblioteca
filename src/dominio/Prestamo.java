@@ -1,7 +1,9 @@
 package dominio;
+import java.io.Serializable;
 
-public class Prestamo {
-    
+public class Prestamo implements Serializable {
+
+
     private String id;
     private Usuario usuario;
     private Material material;

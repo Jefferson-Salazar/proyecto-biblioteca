@@ -1,7 +1,8 @@
 package dominio;
+import java.io.Serializable;
 
-public abstract class Usuario {
-	
+public abstract class Usuario implements Serializable {
+
 	    protected String nombre;
 	    protected String apellido;
 	    protected String carnet;

@@ -1,4 +1,4 @@
 tipo,codigo,titulo,autor,anio,totalCopias,copiasDisponibles,extra1,extra2
-Libro,LIB001,Clean Code,Robert C. Marin,2008,4,2,978-0132350884,
+Libro,LIB001,Clean Code,Robert C. Marin,2008,4,4,978-0132350884,
 Libro,LIB002,Don Quijote de la Mancha,Miguel de  Cervantes,1605,3,2,978-6070740725,
-Revista,REV001,Vogue,Arthur Baldwin Turnure,1892,2,1,2023,
+Revista,REV001,Vogue,Arthur Baldwin Turnure,1892,2,2,2023,

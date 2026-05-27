@@ -1,6 +1,6 @@
 package dominio;
-
-public abstract class Material {
+import java.io.Serializable;
+public abstract class Material implements Serializable {
 
 	    // Atributos
 	    private String codigo;
@@ -38,11 +38,11 @@ public abstract class Material {
 
 	    public void devolver() {
 	        if (copiasDisponibles >= totalCopias) {
-	            throw new IllegalStateException("Todas las copias ya están en stock: " + titulo);
+	            copiasDisponibles = totalCopias; 
+	            return;
 	        }
 	        copiasDisponibles++;
 	    }
-
 	    //Getters
 	    public String getCodigo()            { return codigo; }
 	    public String getTitulo()            { return titulo; }

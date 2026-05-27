@@ -4,7 +4,6 @@ import dominio.Estudiante;
 import dominio.Material;
 import dominio.Prestamo;
 import dominio.Usuario;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JOptionPane;
@@ -23,6 +22,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JComboBox;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 public class VentanaPrestamos extends JFrame {
 
@@ -35,7 +38,7 @@ public class VentanaPrestamos extends JFrame {
 
 	// lista propia de prestamos
 	private List<Prestamo> listaPrestamos;
-	private static int contadorId = 1;
+	
 
 	// combos prestamo
 	JComboBox<String> comboUsuarios;
@@ -289,6 +292,7 @@ public class VentanaPrestamos extends JFrame {
 		scroll.setBorder(null);
 		scroll.setBounds(15, 90, 630, 385);
 		panelTabla.add(scroll);
+		cargarPrestamos();
 
 		// acciones
 		botonPrestar.addActionListener(new java.awt.event.ActionListener() {
@@ -370,11 +374,12 @@ public class VentanaPrestamos extends JFrame {
 	    // realizar prestamo
 	    material.prestar();
 	    String fecha = LocalDate.now().toString();
-	    String id = "P" + String.format("%03d", ++contadorId);
-	    System.out.println("Contador actual: " + contadorId);
+	    String id = generarID();
+	  
 	    System.out.println("ID generado: " + id);
 	    Prestamo nuevo = new Prestamo(id, usuario, material, fecha);
 	    listaPrestamos.add(nuevo);
+	    guardarPrestamos();
 
 	    modeloTabla.addRow(new Object[]{
 	        id,
@@ -428,6 +433,10 @@ public class VentanaPrestamos extends JFrame {
 
 		// realizar devolucion
 		prestamo.devolver();
+		guardarPrestamos();
+		Material material = prestamo.getMaterial();
+		material.devolver();
+		
 
 		// actualizar estado en la tabla
 		for (int i = 0; i < modeloTabla.getRowCount(); i++) {
@@ -484,5 +493,83 @@ public class VentanaPrestamos extends JFrame {
 	                "No se encontraron coincidencias para: \"" + filtro + "\"",
 	                "Sin resultados", JOptionPane.INFORMATION_MESSAGE);
 	    }
+	}
+	
+	private void guardarPrestamos() {
+
+	    try {
+
+	        ObjectOutputStream archivo =
+	                new ObjectOutputStream(
+	                        new FileOutputStream("prestamos.dat"));
+
+	        archivo.writeObject(listaPrestamos);
+
+	        archivo.close();
+
+	    } catch (Exception e) {
+
+	        e.printStackTrace();
+	    }
+	}
+	@SuppressWarnings("unchecked")
+	private void cargarPrestamos() {
+
+	    try {
+
+	        ObjectInputStream archivo =
+	                new ObjectInputStream(
+	                        new FileInputStream("prestamos.dat"));
+
+	        listaPrestamos = (ArrayList<Prestamo>) archivo.readObject();
+
+	        archivo.close();
+
+	        modeloTabla.setRowCount(0);
+
+	        for (Prestamo p : listaPrestamos) {
+
+	            modeloTabla.addRow(new Object[]{
+
+	                    p.getId(),
+	                    p.getUsuario().getCarnet(),
+	                    p.getUsuario().getNombre() + " " +
+	                    p.getUsuario().getApellido(),
+	                    p.getMaterial().getCodigo(),
+	                    p.getMaterial().getTitulo(),
+	                    p.getFechaPrestamo(),
+	                    p.isDevuelto() ? "Devuelto" : "Activo"
+	            });
+	        }
+
+	    } catch (Exception e) {
+
+	        System.out.println("No hay préstamos guardados.");
+	    }
+	}
+	private String generarID() {
+
+	    int mayor = 0;
+
+	    // Recorrer todos los préstamos
+	    for (Prestamo p : listaPrestamos) {
+
+	        // Obtener número del ID
+	        // Ejemplo: P001 -> 001
+	        String numeroTexto = p.getId().substring(1);
+
+	        int numero = Integer.parseInt(numeroTexto);
+
+	        // Guardar el mayor
+	        if (numero > mayor) {
+	            mayor = numero;
+	        }
+	    }
+
+	    // Siguiente ID
+	    mayor++;
+
+	    // Formato P001
+	    return String.format("P%03d", mayor);
 	}
 }
