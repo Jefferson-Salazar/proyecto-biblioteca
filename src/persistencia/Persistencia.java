@@ -201,7 +201,7 @@ String idPrestamo     = columnas[0];
 String carnetUsuario  = columnas[1];
 String codigoMaterial = columnas[2];
 String fechaPrestamo  = columnas[3];
-
+boolean devuelto = Boolean.parseBoolean(columnas[4]);
 Usuario usuarioEncontrado =
 buscarUsuarioPorCarnet(listaUsuarios, carnetUsuario);
 
@@ -214,6 +214,10 @@ usuarioEncontrado,
 materialEncontrado,
 fechaPrestamo
 );
+
+if (devuelto) {
+    prestamoRecuperado.devolver();
+}
 
 listaPrestamos.add(prestamoRecuperado);
         }

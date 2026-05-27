@@ -1,6 +1,7 @@
 package ui;
 
 import dominio.Estudiante;
+
 import dominio.Material;
 import dominio.Prestamo;
 import dominio.Usuario;
@@ -22,10 +23,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JComboBox;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+
 
 public class VentanaPrestamos extends JFrame {
 
@@ -38,7 +36,7 @@ public class VentanaPrestamos extends JFrame {
 
 	// lista propia de prestamos
 	private List<Prestamo> listaPrestamos;
-	
+	private VentanaUsuarios ventanaUsuarios;
 
 	// combos prestamo
 	JComboBox<String> comboUsuarios;
@@ -52,10 +50,11 @@ public class VentanaPrestamos extends JFrame {
 	DefaultTableModel modeloTabla;
 
 	// recibe las listas de materiales y usuarios para buscar en ellas
-	public VentanaPrestamos(List<Material> listaMateriales, List<Usuario> listaUsuarios, List<Prestamo> listaPrestamosExistentes) {
+	public VentanaPrestamos(List<Material> listaMateriales, List<Usuario> listaUsuarios, List<Prestamo> listaPrestamosExistentes, VentanaUsuarios ventanaUsuarios) {
 	    this.materiales     = listaMateriales;
 	    this.usuarios       = listaUsuarios;
 	    this.listaPrestamos = listaPrestamosExistentes;
+	    this.ventanaUsuarios = ventanaUsuarios;
 	    
 
 		setTitle("Préstamos y Devoluciones");
@@ -292,8 +291,20 @@ public class VentanaPrestamos extends JFrame {
 		scroll.setBorder(null);
 		scroll.setBounds(15, 90, 630, 385);
 		panelTabla.add(scroll);
-		cargarPrestamos();
+		for (Prestamo p : listaPrestamos) {
 
+		    modeloTabla.addRow(new Object[]{
+
+		        p.getId(),
+		        p.getUsuario().getCarnet(),
+		        p.getUsuario().getNombre() + " " +
+		        p.getUsuario().getApellido(),
+		        p.getMaterial().getCodigo(),
+		        p.getMaterial().getTitulo(),
+		        p.getFechaPrestamo(),
+		        p.isDevuelto() ? "Devuelto" : "Activo"
+		    });
+		}
 		// acciones
 		botonPrestar.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -379,8 +390,7 @@ public class VentanaPrestamos extends JFrame {
 	    System.out.println("ID generado: " + id);
 	    Prestamo nuevo = new Prestamo(id, usuario, material, fecha);
 	    listaPrestamos.add(nuevo);
-	    guardarPrestamos();
-
+	   
 	    modeloTabla.addRow(new Object[]{
 	        id,
 	        usuario.getCarnet(),
@@ -394,6 +404,7 @@ public class VentanaPrestamos extends JFrame {
 	    comboUsuarios.setSelectedIndex(0);
 	    comboMateriales.setSelectedIndex(0);
 	    JOptionPane.showMessageDialog(this, "Préstamo registrado correctamente.");
+	    ventanaUsuarios.actualizarTabla();
 	}
 
 
@@ -433,9 +444,7 @@ public class VentanaPrestamos extends JFrame {
 
 		// realizar devolucion
 		prestamo.devolver();
-		guardarPrestamos();
-		Material material = prestamo.getMaterial();
-		material.devolver();
+		
 		
 
 		// actualizar estado en la tabla
@@ -448,6 +457,7 @@ public class VentanaPrestamos extends JFrame {
 
 		campoIdDevolucion.setText("");
 		JOptionPane.showMessageDialog(this, "Devolución registrada correctamente.");
+		ventanaUsuarios.actualizarTabla();
 	}
 
 	private void buscarPrestamo(String filtro) {
@@ -495,58 +505,7 @@ public class VentanaPrestamos extends JFrame {
 	    }
 	}
 	
-	private void guardarPrestamos() {
-
-	    try {
-
-	        ObjectOutputStream archivo =
-	                new ObjectOutputStream(
-	                        new FileOutputStream("prestamos.dat"));
-
-	        archivo.writeObject(listaPrestamos);
-
-	        archivo.close();
-
-	    } catch (Exception e) {
-
-	        e.printStackTrace();
-	    }
-	}
-	@SuppressWarnings("unchecked")
-	private void cargarPrestamos() {
-
-	    try {
-
-	        ObjectInputStream archivo =
-	                new ObjectInputStream(
-	                        new FileInputStream("prestamos.dat"));
-
-	        listaPrestamos = (ArrayList<Prestamo>) archivo.readObject();
-
-	        archivo.close();
-
-	        modeloTabla.setRowCount(0);
-
-	        for (Prestamo p : listaPrestamos) {
-
-	            modeloTabla.addRow(new Object[]{
-
-	                    p.getId(),
-	                    p.getUsuario().getCarnet(),
-	                    p.getUsuario().getNombre() + " " +
-	                    p.getUsuario().getApellido(),
-	                    p.getMaterial().getCodigo(),
-	                    p.getMaterial().getTitulo(),
-	                    p.getFechaPrestamo(),
-	                    p.isDevuelto() ? "Devuelto" : "Activo"
-	            });
-	        }
-
-	    } catch (Exception e) {
-
-	        System.out.println("No hay préstamos guardados.");
-	    }
-	}
+	
 	private String generarID() {
 
 	    int mayor = 0;

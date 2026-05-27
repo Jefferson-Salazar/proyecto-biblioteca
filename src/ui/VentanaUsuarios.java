@@ -1,9 +1,10 @@
 package ui;
 
 import dominio.Estudiante;
+
 import dominio.Docente;
 import dominio.Usuario;
-
+import dominio.Prestamo;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -21,6 +22,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.Cursor;
 import java.util.List;
 
+
 public class VentanaUsuarios extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -28,6 +30,7 @@ public class VentanaUsuarios extends JFrame {
 	
 
 	private List<Usuario> usuarios;
+	private List<Prestamo> listaPrestamos;
 
 	// campos del formulario
 	JComboBox<String> comboCarrera;
@@ -52,8 +55,11 @@ public class VentanaUsuarios extends JFrame {
 	JTable tablaUsuarios;
 	DefaultTableModel modeloTabla;
 
-	public VentanaUsuarios(List<Usuario> usuarios) {
-		this.usuarios = usuarios;
+	public VentanaUsuarios(List<Usuario> usuarios,
+            List<Prestamo> listaPrestamos) {
+
+this.usuarios = usuarios;
+this.listaPrestamos = listaPrestamos;
 		
 		setTitle("Usuarios");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -412,8 +418,15 @@ public class VentanaUsuarios extends JFrame {
 			public void actionPerformed(java.awt.event.ActionEvent e) {
 				buscarUsuario(campoBuscar.getText().trim().toLowerCase());
 			}
+			
 		});
+		modeloTabla.setRowCount(0);
+		for (Usuario u : usuarios) {
+		    agregarFilaTabla(u);
+		}
 	}
+	
+	
 
 	private void registrarUsuario() {
 		try {
@@ -507,9 +520,13 @@ public class VentanaUsuarios extends JFrame {
 
 	private void agregarFilaTabla(Usuario u) {
 
-	    String rol = (u instanceof Estudiante)
-	            ? "Estudiante"
-	            : "Docente";
+	    String rol;
+
+	    if (u instanceof Estudiante) {
+	        rol = "Estudiante";
+	    } else {
+	        rol = "Docente";
+	    }
 
 	    String carreraDepartamento = "";
 	    String semestre = "";
@@ -528,6 +545,19 @@ public class VentanaUsuarios extends JFrame {
 	        carreraDepartamento = doc.getDepartamento();
 	    }
 
+	    String prestamoActivo = "No";
+
+	    for (Prestamo p : listaPrestamos) {
+
+	        if (p.getUsuario().getCarnet()
+	                .equalsIgnoreCase(u.getCarnet())
+	                && !p.isDevuelto()) {
+
+	            prestamoActivo = "Sí";
+	            break;
+	        }
+	    }
+
 	    modeloTabla.addRow(new Object[]{
 	        u.getCarnet(),
 	        rol,
@@ -537,8 +567,17 @@ public class VentanaUsuarios extends JFrame {
 	        u.getCorreo(),
 	        carreraDepartamento,
 	        semestre,
-	        "No"
+	        prestamoActivo
 	    });
+	}
+
+	public void actualizarTabla() {
+
+	    modeloTabla.setRowCount(0);
+
+	    for (Usuario u : usuarios) {
+	        agregarFilaTabla(u);
+	    }
 	}
 	private void buscarUsuario(String filtro) {
 	    modeloTabla.setRowCount(0);
@@ -565,5 +604,23 @@ public class VentanaUsuarios extends JFrame {
 	                "No se encontraron coincidencias para: \"" + filtro + "\"",
 	                "Sin resultados", JOptionPane.INFORMATION_MESSAGE);
 	    }
+	}
+	private boolean tienePrestamoActivo(Usuario usuario) {
+
+	    for (Prestamo p : listaPrestamos) {
+	        boolean mismoUsuario =
+	                p.getUsuario().getCarnet()
+	                .trim()
+	                .equalsIgnoreCase(usuario.getCarnet().trim());
+
+	        // préstamo activo
+	        boolean activo = !p.isDevuelto();
+
+	        if (mismoUsuario && activo) {
+	            return true;
+	        }
+	    }
+
+	    return false;
 	}
 }

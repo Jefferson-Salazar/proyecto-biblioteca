@@ -1,6 +1,7 @@
 package ui;
 
 import javax.swing.JFrame;
+
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.Color;
@@ -201,13 +202,22 @@ public class VentanaPrincipal extends JFrame {
 		botonMateriales.addActionListener(e -> {
 			new VentanaMateriales(materiales).setVisible(true);
 		});
+		VentanaUsuarios ventanaUsuarios =
+		        new VentanaUsuarios(usuarios, listaPrestamos);
 
 		botonUsuarios.addActionListener(e -> {
-			new VentanaUsuarios(usuarios).setVisible(true);
+		    ventanaUsuarios.setVisible(true);
 		});
-
+		
 		botonPrestamos.addActionListener(eventoBoton -> {
-		    new VentanaPrestamos(materiales, usuarios, listaPrestamos).setVisible(true);
+
+		    new VentanaPrestamos(
+		            materiales,
+		            usuarios,
+		            listaPrestamos,
+		            ventanaUsuarios
+		    ).setVisible(true);
+
 		});
 		
 		// ── CARGAR DATOS AL INICIAR LA APLICACIÓN ────────────────
