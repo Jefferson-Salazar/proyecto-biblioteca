@@ -424,6 +424,7 @@ this.listaPrestamos = listaPrestamos;
 		for (Usuario u : usuarios) {
 		    agregarFilaTabla(u);
 		}
+		
 	}
 	
 	

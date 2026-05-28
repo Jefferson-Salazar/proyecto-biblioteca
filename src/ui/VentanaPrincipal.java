@@ -202,15 +202,13 @@ public class VentanaPrincipal extends JFrame {
 		botonMateriales.addActionListener(e -> {
 			new VentanaMateriales(materiales).setVisible(true);
 		});
-		VentanaUsuarios ventanaUsuarios =
-		        new VentanaUsuarios(usuarios, listaPrestamos);
-
+		
 		botonUsuarios.addActionListener(e -> {
-		    ventanaUsuarios.setVisible(true);
+			new VentanaUsuarios(usuarios, listaPrestamos).setVisible(true);
 		});
 		
 		botonPrestamos.addActionListener(eventoBoton -> {
-
+			VentanaUsuarios ventanaUsuarios = new VentanaUsuarios(usuarios, listaPrestamos);
 		    new VentanaPrestamos(
 		            materiales,
 		            usuarios,

@@ -342,6 +342,8 @@ public class VentanaMateriales extends JFrame {
 				buscarMaterial();
 			}
 		});
+		
+		actualizarTablaMateriales();
 	}
 
 	private void registrarMaterial() {
