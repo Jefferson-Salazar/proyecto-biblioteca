@@ -1,6 +1,6 @@
 package dominio;
-import java.io.Serializable;
-public abstract class Material implements Serializable {
+
+public abstract class Material  {
 
 	    // Atributos
 	    private String codigo;
