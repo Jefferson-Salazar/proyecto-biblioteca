@@ -65,3 +65,6 @@ carpeta raíz del proyecto.
 **Arquitectura**
 Las listas centrales viven en `Main` y se pasan a cada ventana,
 evitando duplicación de datos entre pantallas.
+
+- Trello: https://trello.com/b/ykk6eYBQ/proyecto-biblioteca
+  
