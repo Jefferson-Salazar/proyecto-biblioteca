@@ -13,16 +13,6 @@ public class Libro extends Material{
 	        this.editorial = editorial;
 	    }
 
-	    @Override
-	    public int diasPrestamoMaximo() {
-	        return 14; // 2 semanas
-	    }
-
-	    @Override
-	    public double calcularMulta(int diasRetraso) {
-	        if (diasRetraso <= 0) return 0;
-	        return diasRetraso * 2.50; // Q2.50 por día
-	    }
 
 	    public String getIsbn()      { return isbn; }
 	    public String getEditorial() { return editorial; }

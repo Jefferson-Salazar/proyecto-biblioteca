@@ -20,9 +20,6 @@ public abstract class Material  {
 	        this.copiasDisponibles = totalCopias; // al registrar, todas disponibles
 	    }
 
-	    // Métodos abstractos 
-	    public abstract int diasPrestamoMaximo();
-	    public abstract double calcularMulta(int diasRetraso);
 
 	    // Métodos concretos de negocio
 	    public boolean estaDisponible() {

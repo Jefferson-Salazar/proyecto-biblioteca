@@ -10,16 +10,6 @@ public class Revista extends Material{
 	        this.numeroEdicion = numeroEdicion;
 	    }
 
-	    @Override
-	    public int diasPrestamoMaximo() {
-	        return 7; // 1 semana
-	    }
-
-	    @Override
-	    public double calcularMulta(int diasRetraso) {
-	        if (diasRetraso <= 0) return 0;
-	        return diasRetraso * 1.00; // Q1.00 por día
-	    }
 
 	    public int getNumeroEdicion() { return numeroEdicion; }
 
